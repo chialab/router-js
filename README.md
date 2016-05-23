@@ -12,7 +12,7 @@ $ npm i chialab-router --save
 $ bower i chialab-router --save
 ```
 
-## Esample
+## Example
 
 ```js
 var appRouter = new Router();
