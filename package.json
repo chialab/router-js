@@ -1,9 +1,10 @@
 {
   "name": "chialab-router",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A simple agnostic router for Web Apps.",
-  "main": "src/router.js",
+  "main": "index.js",
   "build": {
+    "exportDefault": true,
     "globalName": "Router",
     "bundleName": "router.js"
   },
@@ -26,16 +27,16 @@
     "Chialab",
     "route"
   ],
-  "author": "Chialab <dev@chialab.io> (http://chialab.io)",
+  "author": "Chialab <dev@chialab.io> (http://www.chialab.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Chialab/router-js/issues"
   },
   "homepage": "https://github.com/Chialab/router-js#readme",
   "devDependencies": {
-    "es6-workflow": "^0.4.4"
+    "es6-workflow": "^0.4.6"
   },
   "dependencies": {
-    "chialab-callback-manager": "^1.1.1"
+    "chialab-callback-manager": "^1.2.0"
   }
 }
