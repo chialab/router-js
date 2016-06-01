@@ -175,8 +175,8 @@ export class Router {
     trigger(force) {
         let path = this.history.current.url;
         if (force || path !== this.current) {
-            _onChange(this, path);
             this.current = path;
+            _onChange(this, path);
             return true;
         }
         return false;
@@ -246,6 +246,7 @@ export class Router {
         if (!this.started) {
             this.current = this.getPathFromBase();
             this.history.pushState(null, document.title, this.current);
+            this.started = true;
             if (IS_BROWSER) {
                 this.debouncedEmit = debounce(this, this.trigger, 1).bind(this);
                 this.history.on('popstate', this.debouncedEmit);
@@ -257,7 +258,6 @@ export class Router {
                     bindWindow.call(this);
                 }
             }
-            this.started = true;
         }
     }
     /**
