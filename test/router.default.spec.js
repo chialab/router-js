@@ -15,15 +15,9 @@ describe('Unit: Router', () => {
         before((done) => {
             bindRoutes(router, routes);
             let iterator = new Iterator();
-            iterator.add(() => {
-                pushState(null, '', router.resolve('/posts/11'));
-            });
-            iterator.add(() => {
-                pushState(null, '', router.resolve('/posts'));
-            });
-            iterator.add(() => {
-                pushState(null, '', router.resolve('/action'));
-            });
+            iterator.add(() => pushState(null, '', router.resolve('/posts/11')));
+            iterator.add(() => pushState(null, '', router.resolve('/posts')));
+            iterator.add(() => pushState(null, '', router.resolve('/action')));
             iterator.exec(done);
         });
 
@@ -53,48 +47,20 @@ describe('Unit: Router', () => {
         before((done) => {
             router.start();
             let iterator = new Iterator();
-            iterator.add(() => {
-                router.navigate('/posts/11');
-            });
-            iterator.add(() => {
-                router.navigate('/push/');
-            });
-            iterator.add(() => {
-                router.navigate('/posts', '', true);
-            });
-            iterator.add(() => {
-                router.navigate('/action');
-            });
-            iterator.add(() => {
-                router.navigate('/action/12');
-            });
-            iterator.add(() => {
-                router.navigate('/action/20');
-            });
-            iterator.add(() => {
-                router.back();
-            });
-            iterator.add(() => {
-                router.back();
-            });
-            iterator.add(() => {
-                router.back();
-            });
-            iterator.add(() => {
-                router.forward();
-            });
-            iterator.add(() => {
-                router.forward();
-            });
-            iterator.add(() => {
-                back();
-            });
-            iterator.add(() => {
-                back();
-            });
-            iterator.add(() => {
-                forward();
-            });
+            iterator.add(() => router.navigate('/posts/11'));
+            iterator.add(() => router.navigate('/push/'));
+            iterator.add(() => router.navigate('/posts', '', true));
+            iterator.add(() => router.navigate('/action'));
+            iterator.add(() => router.navigate('/action/12'));
+            iterator.add(() => router.navigate('/action/20'));
+            iterator.add(() => router.back());
+            iterator.add(() => router.back());
+            iterator.add(() => router.back());
+            iterator.add(() => router.forward());
+            iterator.add(() => router.forward());
+            iterator.add(() => back());
+            iterator.add(() => back());
+            iterator.add(() => forward());
             iterator.exec(done);
         });
 
@@ -115,9 +81,7 @@ describe('Unit: Router', () => {
         before((done) => {
             router.start();
             let iterator = new Iterator();
-            iterator.add(() => {
-                router.navigate('/person?name=Alan&age=30');
-            });
+            iterator.add(() => router.navigate('/person?name=Alan&age=30'));
             iterator.exec(done);
         });
 

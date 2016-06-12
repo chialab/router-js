@@ -12,9 +12,9 @@
         * [`.getPathFromBase(url)`](#Router+getPathFromBase) ⇒ <code>String</code>
         * [`.trigger(force)`](#Router+trigger) ⇒ <code>Boolean</code>
         * [`.on(filter, callback)`](#Router+on)
-        * [`.navigate(path, title, shouldReplace)`](#Router+navigate) ⇒ <code>Boolean</code>
-        * [`.back()`](#Router+back) ⇒ <code>Boolean</code>
-        * [`.forward()`](#Router+forward) ⇒ <code>Boolean</code>
+        * [`.navigate(path, title, shouldReplace)`](#Router+navigate) ⇒ <code>Promise</code>
+        * [`.back()`](#Router+back) ⇒ <code>Promise</code>
+        * [`.forward()`](#Router+forward) ⇒ <code>Promise</code>
         * [`.start()`](#Router+start)
         * [`.stop()`](#Router+stop)
         * [`.normalize(path)`](#Router+normalize) ⇒ <code>String</code>
@@ -103,11 +103,11 @@ Bind a rule.
 
 <a name="Router+navigate"></a>
 
-### `router.navigate(path, title, shouldReplace)` ⇒ <code>Boolean</code>
+### `router.navigate(path, title, shouldReplace)` ⇒ <code>Promise</code>
 Exec a router change.
 
 **Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Boolean</code> - The navigation has matched a router's rule.  
+**Returns**: <code>Promise</code> - A promise which resolves if the navigation has matched a router's rule.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -117,18 +117,18 @@ Exec a router change.
 
 <a name="Router+back"></a>
 
-### `router.back()` ⇒ <code>Boolean</code>
+### `router.back()` ⇒ <code>Promise</code>
 Move back in the history.
 
 **Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Boolean</code> - The history has been navigated.  
+**Returns**: <code>Promise</code> - A promise which resolves if the history has been navigated.  
 <a name="Router+forward"></a>
 
-### `router.forward()` ⇒ <code>Boolean</code>
+### `router.forward()` ⇒ <code>Promise</code>
 Move forward in the history.
 
 **Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Boolean</code> - The history has been navigated.  
+**Returns**: <code>Promise</code> - A promise which resolves if the history has been navigated.  
 <a name="Router+start"></a>
 
 ### `router.start()`

@@ -17,15 +17,9 @@ describe('Unit: Router', () => {
         before((done) => {
             bindRoutes(router, routes);
             let iterator = new Iterator();
-            iterator.add(() => {
-                router.navigate('/posts/11');
-            });
-            iterator.add(() => {
-                router.navigate('/posts');
-            });
-            iterator.add(() => {
-                router.navigate('/action');
-            });
+            iterator.add(() => router.navigate('/posts/11'));
+            iterator.add(() => router.navigate('/posts'));
+            iterator.add(() => router.navigate('/action'));
             iterator.exec(done);
         });
 

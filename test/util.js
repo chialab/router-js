@@ -3,8 +3,9 @@
 export function debounce(callback) {
     return new Promise((resolve) => {
         setTimeout(() => {
-            callback();
-            resolve();
+            callback()
+                .then(() => resolve())
+                .catch(() => resolve());
         }, 10);
     });
 }
@@ -17,16 +18,19 @@ function fireEvent() {
 export function pushState(...args) {
     window.history.pushState(...args);
     fireEvent();
+    return Promise.resolve();
 }
 
 export function back() {
     window.history.back();
     fireEvent();
+    return Promise.resolve();
 }
 
 export function forward() {
     window.history.forward();
     fireEvent();
+    return Promise.resolve();
 }
 
 export function bindRoutes(router, routes) {
@@ -57,6 +61,7 @@ export class Iterator {
                 count++;
                 debounce(() => {
                     this.exec(done, count);
+                    return Promise.resolve();
                 });
             });
         } else {

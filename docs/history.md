@@ -8,9 +8,9 @@
     * [`.current`](#History+current) : <code>Object</code>
     * [`.length`](#History+length) : <code>Integer</code>
     * [`.reset()`](#History+reset)
-    * [`.go(shift)`](#History+go) ⇒ <code>Object</code>
-    * [`.back()`](#History+back) ⇒ <code>Object</code>
-    * [`.forward()`](#History+forward) ⇒ <code>Object</code>
+    * [`.go(shift)`](#History+go) ⇒ <code>Promise</code>
+    * [`.back()`](#History+back) ⇒ <code>Promise</code>
+    * [`.forward()`](#History+forward) ⇒ <code>Promise</code>
     * [`.indexOfState(state)`](#History+indexOfState) ⇒ <code>Integer</code>
     * [`.pushState(stateObj, title, url)`](#History+pushState) ⇒ <code>Object</code>
     * [`.replaceState(stateObj, title, url)`](#History+replaceState) ⇒ <code>Object</code>
@@ -43,11 +43,11 @@ Reset index and entries.
 **Kind**: instance method of <code>[History](#History)</code>  
 <a name="History+go"></a>
 
-### `history.go(shift)` ⇒ <code>Object</code>
+### `history.go(shift)` ⇒ <code>Promise</code>
 Move in the history.
 
 **Kind**: instance method of <code>[History](#History)</code>  
-**Returns**: <code>Object</code> - The new current state.  
+**Returns**: <code>Promise</code> - A promise which resolves the new current state.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -55,18 +55,18 @@ Move in the history.
 
 <a name="History+back"></a>
 
-### `history.back()` ⇒ <code>Object</code>
+### `history.back()` ⇒ <code>Promise</code>
 Move back in the history by one entry. Same as `.go(-1)`
 
 **Kind**: instance method of <code>[History](#History)</code>  
-**Returns**: <code>Object</code> - The new current state.  
+**Returns**: <code>Promise</code> - A promise which resolves the new current state.  
 <a name="History+forward"></a>
 
-### `history.forward()` ⇒ <code>Object</code>
+### `history.forward()` ⇒ <code>Promise</code>
 Move forward in the history by one entry. Same as `.go(1)`
 
 **Kind**: instance method of <code>[History](#History)</code>  
-**Returns**: <code>Object</code> - The new current state.  
+**Returns**: <code>Promise</code> - A promise which resolves the new current state.  
 <a name="History+indexOfState"></a>
 
 ### `history.indexOfState(state)` ⇒ <code>Integer</code>

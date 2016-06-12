@@ -17,15 +17,9 @@ describe('Unit: Router', () => {
         before((done) => {
             bindRoutes(router, routes);
             let iterator = new Iterator();
-            iterator.add(() => {
-                pushState(null, '', router.resolve('/posts/11'));
-            });
-            iterator.add(() => {
-                pushState(null, '', router.resolve('/posts'));
-            });
-            iterator.add(() => {
-                pushState(null, '', router.resolve('/action'));
-            });
+            iterator.add(() => pushState(null, '', router.resolve('/posts/11')));
+            iterator.add(() => pushState(null, '', router.resolve('/posts')));
+            iterator.add(() => pushState(null, '', router.resolve('/action')));
             iterator.exec(done);
         });
 

@@ -1,4 +1,5 @@
 import { CallbackManager } from 'chialab/callback-manager/src/callback-manager.js';
+import { OutOfHistoryException } from './exceptions/out-of-history.js';
 
 /**
  * Generate a descriptor for a history state.
@@ -52,29 +53,30 @@ export class History {
      * Reset index and entries.
      */
     reset() {
-        this.index = 0;
+        this.index = -1;
         this.entries = [];
     }
     /**
      * Move in the history.
      *
      * @param {Integer} shift The shift movement in the history.
-     * @return {Object} The new current state.
+     * @return {Promise} A promise which resolves the new current state.
      */
     go(shift) {
         if (shift !== 0) {
             let index = this.index + shift;
-            index = Math.max(index, 0);
-            index = Math.min(index, this.entries.length - 1);
+            if (index < 0 || index >= this.entries.length) {
+                return Promise.reject(new OutOfHistoryException());
+            }
             this.index = index;
             this.trigger('popstate', this.current);
         }
-        return this.current;
+        return Promise.resolve(this.current);
     }
     /**
      * Move back in the history by one entry. Same as `.go(-1)`
      *
-     * @return {Object} The new current state.
+     * @return {Promise} A promise which resolves the new current state.
      */
     back() {
         return this.go(-1);
@@ -82,7 +84,7 @@ export class History {
     /**
      * Move forward in the history by one entry. Same as `.go(1)`
      *
-     * @return {Object} The new current state.
+     * @return {Promise} A promise which resolves the new current state.
      */
     forward() {
         return this.go(1);

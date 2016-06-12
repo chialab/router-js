@@ -1,4 +1,6 @@
 import { History } from './history.js';
+import { RouterNotStartedException } from './exceptions/not-started.js';
+import { RouterNotFoundException } from './exceptions/not-found.js';
 
 const IS_BROWSER = typeof window !== 'undefined' &&
     typeof window.addEventListener === 'function';
@@ -201,7 +203,7 @@ export class Router {
      * @param {String} path The new current path.
      * @param {String} title The title for the new current path.
      * @param {Boolean} shouldReplace Should replace the current state or add a new one.
-     * @return {Boolean} The navigation has matched a router's rule.
+     * @return {Promise} A promise which resolves if the navigation has matched a router's rule.
      */
     navigate(path, title, shouldReplace = false) {
         if (this.started) {
@@ -211,31 +213,34 @@ export class Router {
             } else {
                 this.history.pushState(null, title, path);
             }
-            return this.trigger();
+            if (this.trigger()) {
+                return Promise.resolve();
+            }
+            return Promise.reject(new RouterNotFoundException());
         }
-        return false;
+        return Promise.reject(new RouterNotStartedException());
     }
     /**
      * Move back in the history.
      *
-     * @return {Boolean} The history has been navigated.
+     * @return {Promise} A promise which resolves if the history has been navigated.
      */
     back() {
         if (this.started) {
             return this.history.back();
         }
-        return false;
+        return Promise.reject(new RouterNotStartedException());
     }
     /**
      * Move forward in the history.
      *
-     * @return {Boolean} The history has been navigated.
+     * @return {Promise} A promise which resolves if the history has been navigated.
      */
     forward() {
         if (this.started) {
             return this.history.forward();
         }
-        return false;
+        return Promise.reject(new RouterNotStartedException());
     }
     /**
      * Init all history's listeners.

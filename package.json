@@ -1,6 +1,6 @@
 {
   "name": "chialab-router",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A simple agnostic router for Web Apps.",
   "main": "index.js",
   "build": {
@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/Chialab/router-js#readme",
   "devDependencies": {
-    "es6-workflow": "^0.4.6"
+    "es6-workflow": "latest"
   },
   "dependencies": {
     "chialab-callback-manager": "^1.2.0"
