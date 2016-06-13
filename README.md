@@ -36,3 +36,5 @@ appRouter.start();
 [![Chialab es6-workflow](https://img.shields.io/badge/project-es6--workflow-lightgrey.svg)](https://github.com/Chialab/es6-workflow)
 [![Travis](https://img.shields.io/travis/Chialab/router-js.svg?maxAge=2592000)](https://travis-ci.org/Chialab/router-js)
 [![Code coverage](https://codecov.io/gh/Chialab/router-js/branch/master/graph/badge.svg)](https://codecov.io/gh/Chialab/router-js)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/chialab-sl-008.svg)](https://saucelabs.com/u/chialab-sl-008)
