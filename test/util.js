@@ -11,7 +11,13 @@ export function debounce(callback) {
 }
 
 function fireEvent() {
-    let ev = new Event('popstate');
+    let ev;
+    if (typeof CustomEvent === 'function') {
+        ev = new CustomEvent('popstate', {});
+    } else {
+        ev = document.createEvent('Event');
+        ev.initEvent('popstate', true, true);
+    }
     window.dispatchEvent(ev);
 }
 

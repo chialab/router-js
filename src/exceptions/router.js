@@ -1,3 +1,9 @@
+Object.setPrototypeOf = Object.setPrototypeOf || function(obj, proto) {
+    // eslint-disable-next-line
+    obj.__proto__ = proto;
+    return obj;
+};
+
 export class RouterException {
     get defaultMessage() {
         return 'Generic Router error';
