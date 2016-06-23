@@ -16,10 +16,10 @@ $ bower i chialab-router --save
 
 ```js
 var appRouter = new Router();
-appRouter.on('/user/*', function(id) {
+appRouter.on('/user/:username', function(id) {
     fetchUserById(id);
 });
-appRouter.on('/posts/*', function(id) {
+appRouter.on('/posts/:id', function(id) {
     fetchPostById(id);
 });
 appRouter.on('/posts', function() {
