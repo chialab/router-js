@@ -1,37 +1,16 @@
 import { History } from './history.js';
 import { RouterNotStartedException } from './exceptions/not-started.js';
 import { RouterNotFoundException } from './exceptions/not-found.js';
+import { ParserUndefinedException } from './exceptions/parser-undefined.js';
+import { riotParser } from './parsers/riot.js';
 
 const IS_BROWSER = typeof window !== 'undefined' &&
     typeof window.addEventListener === 'function';
 const HISTORY = IS_BROWSER && window.history;
 const LOCATION = IS_BROWSER && (HISTORY && HISTORY.location || window && window.location);
 const ORIGIN_REGEX = /^((https?|s?ftps?):\/+)?(.+?)(?=\/|$)/i;
-const CALLBACKS = {};
 
 let routerCount = 0;
-
-/**
- * Trigger callbacks for route rule.
- * @private
- *
- * @param {Object} ctx The current Router instance.
- * @param {String} path The current path.
- * @return {Boolean} The router has found a rule for the current path.
- */
-function _onChange(ctx, path) {
-    ctx.routes.some((filter) => {
-        let args = ctx.parser(ctx.normalize(path), ctx.normalize(filter));
-        if (args !== null) {
-            let clbs = (CALLBACKS[ctx.id] && CALLBACKS[ctx.id][filter]) || [];
-            clbs.forEach((callback) => {
-                callback.apply(ctx, args);
-            });
-            return true;
-        }
-        return false;
-    });
-}
 
 /**
  * Make a command asynced.
@@ -95,6 +74,12 @@ function unbindWindow() {
 }
 
 export class Router {
+    static get defaultParser() {
+        return this.RIOT_PARSER;
+    }
+    static get RIOT_PARSER() {
+        return riotParser;
+    }
     /**
      * A list of options for a Router instance.
      * @namespace
@@ -116,6 +101,7 @@ export class Router {
      * @param {Object} options A set of options for the router.
      */
     constructor(options = {}) {
+        this.parser = this.constructor.defaultParser;
         this.history = new History();
         this.started = false;
         this.reset();
@@ -132,25 +118,10 @@ export class Router {
         routerCount++;
     }
     /**
-     * Extract the pathname from an URL.
-     *
-     * @param {String} path The path to parse.
-     * @return {Array} A list of values for path variables.
-     */
-    parser(path, filter) {
-        filter = filter.replace(/\*/g, '([^/?#]+?)').replace(/\.\./, '(.*)');
-        let re = new RegExp(`^${filter}$`);
-        let args = path.match(re);
-        if (args) {
-            return args.slice(1);
-        }
-        return null;
-    }
-    /**
      * Reset all router rules.
      */
     reset() {
-        delete CALLBACKS[this.id];
+        this.callbacks = {};
         this.routes = [];
     }
     /**
@@ -178,7 +149,27 @@ export class Router {
         let path = this.history.current.url;
         if (force || path !== this.current) {
             this.current = path;
-            _onChange(this, path);
+            if (typeof this.parser !== 'function') {
+                throw new ParserUndefinedException();
+            }
+            this.routes.some((filter) => {
+                let args = this.parser(
+                    this.normalize(path),
+                    this.normalize(filter)
+                );
+                if (args !== null) {
+                    let clbs = this.callbacks[filter] || [];
+                    clbs.some((callback) => {
+                        let res = callback.apply(this, args);
+                        if (res === false) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    return true;
+                }
+                return false;
+            });
             return true;
         }
         return false;
@@ -193,9 +184,8 @@ export class Router {
         filter = this.normalize(filter);
         filter = `/${filter}`;
         this.routes.push(filter);
-        CALLBACKS[this.id] = CALLBACKS[this.id] || {};
-        CALLBACKS[this.id][filter] = CALLBACKS[this.id][filter] || [];
-        CALLBACKS[this.id][filter].push(callback);
+        this.callbacks[filter] = this.callbacks[filter] || [];
+        this.callbacks[filter].push(callback);
     }
     /**
      * Exec a router change.
