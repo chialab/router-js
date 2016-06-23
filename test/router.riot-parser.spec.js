@@ -3,7 +3,9 @@ import { pushState, back, forward, bindRoutes, Iterator } from './util.js';
 
 /* globals describe, before, after, beforeEach, afterEach, it, assert */
 describe('Unit: Router', () => {
-    const router = new Router();
+    const router = new Router({
+        parser: Router.RIOT_PARSER,
+    });
 
     describe('default configuration', () => {
         const routes = {

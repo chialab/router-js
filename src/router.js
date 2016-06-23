@@ -3,6 +3,7 @@ import { RouterNotStartedException } from './exceptions/not-started.js';
 import { RouterNotFoundException } from './exceptions/not-found.js';
 import { ParserUndefinedException } from './exceptions/parser-undefined.js';
 import { riotParser } from './parsers/riot.js';
+import { expressParser } from './parsers/express.js';
 
 const IS_BROWSER = typeof window !== 'undefined' &&
     typeof window.addEventListener === 'function';
@@ -74,11 +75,14 @@ function unbindWindow() {
 }
 
 export class Router {
-    static get defaultParser() {
-        return this.RIOT_PARSER;
+    static get EXPRESS_PARSER() {
+        return expressParser;
     }
     static get RIOT_PARSER() {
         return riotParser;
+    }
+    static get defaultParser() {
+        return this.EXPRESS_PARSER;
     }
     /**
      * A list of options for a Router instance.
@@ -92,6 +96,7 @@ export class Router {
             base: '#',
             dispatch: true,
             bind: true,
+            parser: Router.RIOT_PARSER,
         };
     }
     /**
@@ -101,7 +106,6 @@ export class Router {
      * @param {Object} options A set of options for the router.
      */
     constructor(options = {}) {
-        this.parser = this.constructor.defaultParser;
         this.history = new History();
         this.started = false;
         this.reset();
@@ -113,6 +117,7 @@ export class Router {
                 this.options[key] = this.DEFAULTS[key];
             }
         }
+        this.parser = this.options.parser;
         this.base = this.options.base;
         this.id = routerCount;
         routerCount++;
