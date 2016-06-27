@@ -151,31 +151,33 @@ export class Router {
      * @return {Boolean} A rule has been matched.
      */
     trigger(force) {
-        let path = this.history.current.url;
-        if (force || path !== this.current) {
-            this.current = path;
-            if (typeof this.parser !== 'function') {
-                throw new ParserUndefinedException();
-            }
-            this.routes.some((filter) => {
-                let args = this.parser(
-                    this.normalize(path),
-                    this.normalize(filter)
-                );
-                if (args !== null) {
-                    let clbs = this.callbacks[filter] || [];
-                    clbs.some((callback) => {
-                        let res = callback.apply(this, args);
-                        if (res === false) {
-                            return true;
-                        }
-                        return false;
-                    });
-                    return true;
+        if (this.history && this.history.current) {
+            let path = this.history.current.url;
+            if (force || path !== this.current) {
+                this.current = path;
+                if (typeof this.parser !== 'function') {
+                    throw new ParserUndefinedException();
                 }
-                return false;
-            });
-            return true;
+                this.routes.some((filter) => {
+                    let args = this.parser(
+                        this.normalize(path),
+                        this.normalize(filter)
+                    );
+                    if (args !== null) {
+                        let clbs = this.callbacks[filter] || [];
+                        clbs.some((callback) => {
+                            let res = callback.apply(this, args);
+                            if (res === false) {
+                                return true;
+                            }
+                            return false;
+                        });
+                        return true;
+                    }
+                    return false;
+                });
+                return true;
+            }
         }
         return false;
     }
@@ -244,8 +246,10 @@ export class Router {
      */
     start() {
         if (!this.started) {
-            this.current = this.getPathFromBase();
-            this.history.pushState(null, document.title, this.current);
+            if (this.options.bind) {
+                this.current = this.getPathFromBase();
+                this.history.pushState(null, document.title, this.current);
+            }
             this.started = true;
             if (IS_BROWSER) {
                 this.debouncedEmit = debounce(this, this.trigger, 1).bind(this);
