@@ -288,7 +288,9 @@ export class Router {
      * @return {String} The complete path.
      */
     resolve(path) {
-        return `${this.base}/${path}`.replace(/\/+/, '/');
+        path = path.replace(/^\/*/, '');
+        let addSlash = this.base.slice(-1) !== '/';
+        return `${this.base}${addSlash !== '/' ? '/' : ''}${path}`;
     }
     /**
      * Parse URL querystring.
