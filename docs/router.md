@@ -7,7 +7,6 @@
     * [`new Router(options)`](#new_Router_new)
     * _instance_
         * [`.DEFAULTS`](#Router+DEFAULTS) : <code>object</code>
-        * [`.parser(path)`](#Router+parser) ⇒ <code>Array</code>
         * [`.reset()`](#Router+reset)
         * [`.getPathFromBase(url)`](#Router+getPathFromBase) ⇒ <code>String</code>
         * [`.trigger(force)`](#Router+trigger) ⇒ <code>Boolean</code>
@@ -46,18 +45,6 @@ A list of options for a Router instance.
 | base | <code>String</code> | The base pathname for the router (`'#'`). |
 | dispatch | <code>Boolean</code> | Should trigger initial state (`true`). |
 | bind | <code>Boolean</code> | Should bind to the global `window.history` object (`true`). |
-
-<a name="Router+parser"></a>
-
-### `router.parser(path)` ⇒ <code>Array</code>
-Extract the pathname from an URL.
-
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Array</code> - A list of values for path variables.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| path | <code>String</code> | The path to parse. |
 
 <a name="Router+reset"></a>
 

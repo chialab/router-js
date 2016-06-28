@@ -1,9 +1,9 @@
 import { History } from './history.js';
-import { RouterNotStartedException } from './exceptions/not-started.js';
-import { RouterNotFoundException } from './exceptions/not-found.js';
-import { ParserUndefinedException } from './exceptions/parser-undefined.js';
-import { riotParser } from './parsers/riot.js';
-import { expressParser } from './parsers/express.js';
+import { RouterNotStartedException } from './exceptions/not-started-exception.js';
+import { RouterNotFoundException } from './exceptions/not-found-exception.js';
+import { ParserUndefinedException } from './exceptions/parser-undefined-exception.js';
+import { riotParser } from './parsers/riot-parser.js';
+import { expressParser } from './parsers/express-parser.js';
 
 const IS_BROWSER = typeof window !== 'undefined' &&
     typeof window.addEventListener === 'function';

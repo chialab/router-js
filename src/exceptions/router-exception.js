@@ -4,6 +4,10 @@ Object.setPrototypeOf = Object.setPrototypeOf || function(obj, proto) {
     return obj;
 };
 
+/**
+ * Generic Router exceptions.
+ * @class RouterException
+ */
 export class RouterException {
     get defaultMessage() {
         return 'Generic Router error';

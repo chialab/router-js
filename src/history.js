@@ -1,5 +1,5 @@
 import { CallbackManager } from 'chialab/callback-manager/src/callback-manager.js';
-import { OutOfHistoryException } from './exceptions/out-of-history.js';
+import { OutOfHistoryException } from './exceptions/out-of-history-exception.js';
 
 /**
  * Generate a descriptor for a history state.
