@@ -151,35 +151,38 @@ export class Router {
      * @return {Boolean} A rule has been matched.
      */
     trigger(force) {
-        if (this.history && this.history.current) {
-            let path = this.history.current.url;
-            if (force || path !== this.current) {
-                this.current = path;
-                if (typeof this.parser !== 'function') {
-                    throw new ParserUndefinedException();
-                }
-                this.routes.some((filter) => {
-                    let args = this.parser(
-                        this.normalize(path),
-                        this.normalize(filter)
-                    );
-                    if (args !== null) {
-                        let clbs = this.callbacks[filter] || [];
-                        clbs.some((callback) => {
-                            let res = callback.apply(this, args);
-                            if (res === false) {
-                                return true;
-                            }
-                            return false;
-                        });
-                        return true;
-                    }
-                    return false;
-                });
-                return true;
+        let path = this.history && this.history.current && this.history.current.url || '';
+        if (force || path !== this.current) {
+            this.current = path;
+            if (typeof this.parser !== 'function') {
+                return Promise.reject(new ParserUndefinedException());
             }
+            let found = false;
+            this.routes.some((filter) => {
+                let args = this.parser(
+                    this.normalize(path),
+                    this.normalize(filter)
+                );
+                if (args !== null) {
+                    let clbs = this.callbacks[filter] || [];
+                    clbs.some((callback) => {
+                        let res = callback.apply(this, args);
+                        if (res === false) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    found = true;
+                    return true;
+                }
+                return false;
+            });
+            if (found) {
+                return Promise.resolve();
+            }
+            return Promise.reject(new RouterNotFoundException());
         }
-        return false;
+        return Promise.resolve();
     }
     /**
      * Bind a rule.
@@ -210,10 +213,7 @@ export class Router {
             } else {
                 this.history.pushState(null, title, path);
             }
-            if (this.trigger()) {
-                return Promise.resolve();
-            }
-            return Promise.reject(new RouterNotFoundException());
+            return this.trigger();
         }
         return Promise.reject(new RouterNotStartedException());
     }
@@ -294,7 +294,7 @@ export class Router {
     resolve(path) {
         path = path.replace(/^\/*/, '');
         let addSlash = this.base.slice(-1) !== '/';
-        return `${this.base}${addSlash !== '/' ? '/' : ''}${path}`;
+        return `${this.base}${addSlash ? '/' : ''}${path}`;
     }
     /**
      * Parse URL querystring.
