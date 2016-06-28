@@ -29,8 +29,7 @@ export class History {
      * @class History
      */
     constructor() {
-        const cb = new CallbackManager();
-        cb.attachToPrototype(this);
+        CallbackManager.define(this);
         this.reset();
     }
     /**
