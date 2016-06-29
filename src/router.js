@@ -254,7 +254,7 @@ export class Router {
             if (IS_BROWSER) {
                 this.debouncedEmit = debounce(this, this.trigger, 1).bind(this);
                 this.history.on('popstate', this.debouncedEmit);
-                if (this.options.dispatch) {
+                if (this.options.dispatch && this.history.length) {
                     this.trigger(true);
                 }
                 this.options.dispatch = true;
