@@ -96,7 +96,7 @@ export class Router {
             base: '#',
             dispatch: true,
             bind: true,
-            parser: Router.RIOT_PARSER,
+            parser: Router.defaultParser,
         };
     }
     /**
