@@ -11,7 +11,8 @@
         * [`.getPathFromBase(url)`](#Router+getPathFromBase) ⇒ <code>String</code>
         * [`.trigger(force)`](#Router+trigger) ⇒ <code>Boolean</code>
         * [`.on(filter, callback)`](#Router+on)
-        * [`.navigate(path, title, shouldReplace)`](#Router+navigate) ⇒ <code>Promise</code>
+        * [`.navigate(path, title, shouldReplace, force)`](#Router+navigate) ⇒ <code>Promise</code>
+        * [`.refresh(path, title, shouldReplace, force)`](#Router+refresh) ⇒ <code>Promise</code>
         * [`.back()`](#Router+back) ⇒ <code>Promise</code>
         * [`.forward()`](#Router+forward) ⇒ <code>Promise</code>
         * [`.start()`](#Router+start)
@@ -90,7 +91,7 @@ Bind a rule.
 
 <a name="Router+navigate"></a>
 
-### `router.navigate(path, title, shouldReplace)` ⇒ <code>Promise</code>
+### `router.navigate(path, title, shouldReplace, force)` ⇒ <code>Promise</code>
 Exec a router change.
 
 **Kind**: instance method of <code>[Router](#Router)</code>  
@@ -101,6 +102,22 @@ Exec a router change.
 | path | <code>String</code> |  | The new current path. |
 | title | <code>String</code> |  | The title for the new current path. |
 | shouldReplace | <code>Boolean</code> | <code>false</code> | Should replace the current state or add a new one. |
+| force | <code>Boolean</code> | <code>false</code> | Should force the state trigger. |
+
+<a name="Router+refresh"></a>
+
+### `router.refresh(path, title, shouldReplace, force)` ⇒ <code>Promise</code>
+Helper method for state refresh.
+
+**Kind**: instance method of <code>[Router](#Router)</code>  
+**Returns**: <code>Promise</code> - A promise which resolves if the navigation has matched a router's rule.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>String</code> | The new current path. |
+| title | <code>String</code> | The title for the new current path. |
+| shouldReplace | <code>Boolean</code> | Should replace the current state or add a new one. |
+| force | <code>Boolean</code> | Should force the state trigger. |
 
 <a name="Router+back"></a>
 
