@@ -1,6 +1,7 @@
 import { History } from './history.js';
 import { RouterNotStartedException } from './exceptions/not-started-exception.js';
 import { RouterNotFoundException } from './exceptions/not-found-exception.js';
+import { RouterInvalidException } from './exceptions/invalid-exception.js';
 import { ParserUndefinedException } from './exceptions/parser-undefined-exception.js';
 import { riotParser } from './parsers/riot-parser.js';
 import { expressParser } from './parsers/express-parser.js';
@@ -203,9 +204,10 @@ export class Router {
      * @param {String} path The new current path.
      * @param {String} title The title for the new current path.
      * @param {Boolean} shouldReplace Should replace the current state or add a new one.
+     * @param {Boolean} force Should force the state trigger.
      * @return {Promise} A promise which resolves if the navigation has matched a router's rule.
      */
-    navigate(path, title, shouldReplace = false) {
+    navigate(path, title, shouldReplace = false, force = false) {
         if (this.started) {
             path = this.normalize(path);
             if (shouldReplace) {
@@ -213,7 +215,26 @@ export class Router {
             } else {
                 this.history.pushState(null, title, path);
             }
-            return this.trigger();
+            return this.trigger(force);
+        }
+        return Promise.reject(new RouterNotStartedException());
+    }
+    /**
+     * Helper method for state refresh.
+     *
+     * @param {String} path The new current path.
+     * @param {String} title The title for the new current path.
+     * @param {Boolean} shouldReplace Should replace the current state or add a new one.
+     * @param {Boolean} force Should force the state trigger.
+     * @return {Promise} A promise which resolves if the navigation has matched a router's rule.
+     */
+    refresh() {
+        if (this.started) {
+            let currentState = this.history && this.history.current && this.history.current;
+            if (currentState) {
+                return this.navigate(currentState.url, currentState.title, true, true);
+            }
+            return Promise.reject(new RouterInvalidException());
         }
         return Promise.reject(new RouterNotStartedException());
     }
