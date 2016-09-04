@@ -22,14 +22,14 @@ function createState(state, title, url, type) {
     };
 }
 
-export class History {
+export class History extends CallbackManager.mixin() {
     /**
      * States collector.
      * An abstraction of the window.history object.
      * @class History
      */
     constructor() {
-        CallbackManager.define(this);
+        super();
         this.reset();
     }
     /**
