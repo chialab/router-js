@@ -5,6 +5,7 @@ module.exports = function(karma) {
     karma.client = karma.client || {};
     // karma.client.useIframe = false;
     karma.files.unshift(
+        'node_modules/weakmap/weakmap.js',
         'node_modules/html5-history-api/history.js',
         'node_modules/chialab-callback-manager/src/callback-manager.js'
     );

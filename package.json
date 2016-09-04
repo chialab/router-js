@@ -35,7 +35,8 @@
   "homepage": "https://github.com/Chialab/router-js#readme",
   "devDependencies": {
     "es6-workflow": "latest",
-    "html5-history-api": "^4.2.7"
+    "html5-history-api": "^4.2.7",
+    "weakmap": "0.0.6"
   },
   "dependencies": {
     "chialab-callback-manager": "^2.0.0"
