@@ -91,6 +91,7 @@ export class Router {
      * @property {String} base The base pathname for the router (`'#'`).
      * @property {Boolean} dispatch Should trigger initial state (`true`).
      * @property {Boolean} bind Should bind to the global `window.history` object (`true`).
+     * @property {Boolean} triggerHashChange Should trigger a new state if only hash has changed (`true`).
      */
     get DEFAULTS() {
         return {
@@ -98,6 +99,7 @@ export class Router {
             dispatch: true,
             bind: true,
             parser: Router.defaultParser,
+            triggerHashChange: true,
         };
     }
     /**
@@ -145,6 +147,20 @@ export class Router {
         url = LOCATION ? Router.getPathFromRoot(url) : (url || '');
         return url.replace(base, '');
     }
+    hasPathnameChanged(path) {
+        if (!this.current) {
+            return true;
+        }
+        let oldPath = this.current.split('#').shift();
+        let newPath = path.split('#').shift();
+        return (oldPath !== newPath);
+    }
+    changeType(path) {
+        if (path !== this.current) {
+            return this.hasPathnameChanged(path) ? 2 : 1;
+        }
+        return 0;
+    }
     /**
      * Parse the current path and trigger callbacks if a match with rules has been found.
      *
@@ -153,7 +169,8 @@ export class Router {
      */
     trigger(force) {
         let path = this.history && this.history.current && this.history.current.url || '';
-        if (force || path !== this.current) {
+        let changeType = this.changeType(path);
+        if (force || (changeType > 0 && (this.options.triggerHashChange || changeType === 2))) {
             this.current = path;
             if (typeof this.parser !== 'function') {
                 return Promise.reject(new ParserUndefinedException());
@@ -182,6 +199,10 @@ export class Router {
                 return Promise.resolve();
             }
             return Promise.reject(new RouterNotFoundException());
+        } else if (changeType === 1 && this.options.bind) {
+            this.current = path;
+            let hashChangedEvent = new Event('hashchange');
+            window.dispatchEvent(hashChangedEvent);
         }
         return Promise.resolve();
     }
