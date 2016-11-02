@@ -1,7 +1,7 @@
 (function() {
     System.config({
         paths: {
-            'chialab/*': 'node_modules/chialab-*',
+            'chialab-*': 'node_modules/chialab-*',
         },
     });
 }());
