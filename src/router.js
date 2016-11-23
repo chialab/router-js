@@ -148,7 +148,7 @@ export class Router {
         return url.replace(base, '');
     }
     hasPathnameChanged(path) {
-        if (!this.current) {
+        if (typeof this.current !== 'string') {
             return true;
         }
         let oldPath = this.current.split('#').shift();
