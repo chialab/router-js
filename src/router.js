@@ -288,6 +288,7 @@ export class Router {
      */
     start() {
         if (!this.started) {
+            let res = Promise.resolve();
             if (this.options.bind) {
                 this.current = this.getPathFromBase();
                 this.history.pushState(null, document.title, this.current);
@@ -297,14 +298,16 @@ export class Router {
                 this.debouncedEmit = debounce(this, this.trigger, 1).bind(this);
                 this.history.on('popstate', this.debouncedEmit);
                 if (this.options.dispatch && this.history.length) {
-                    this.trigger(true);
+                    res = this.trigger(true);
                 }
-                this.options.dispatch = true;
                 if (this.options.bind) {
                     bindWindow.call(this);
                 }
+                this.options.dispatch = true;
             }
+            return res;
         }
+        return Promise.reject();
     }
     /**
      * Remove all history's listeners.
