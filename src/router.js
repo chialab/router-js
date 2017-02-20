@@ -175,7 +175,7 @@ export class Router {
             if (typeof this.parser !== 'function') {
                 return Promise.reject(new ParserUndefinedException());
             }
-            let found = false;
+            let responsePromise = Promise.reject();
             this.routes.some((filter) => {
                 let args = this.parser(
                     this.normalize(path),
@@ -183,22 +183,16 @@ export class Router {
                 );
                 if (args !== null) {
                     let clbs = this.callbacks[filter] || [];
-                    clbs.some((callback) => {
-                        let res = callback.apply(this, args);
-                        if (res === false) {
-                            return true;
-                        }
-                        return false;
+                    clbs.forEach((callback) => {
+                        responsePromise = responsePromise
+                            .catch(() => callback.apply(this, args));
                     });
-                    found = true;
                     return true;
                 }
                 return false;
             });
-            if (found) {
-                return Promise.resolve();
-            }
-            return Promise.reject(new RouterNotFoundException());
+            return responsePromise
+                .catch(() => Promise.reject(new RouterNotFoundException()));
         } else if (changeType === 1 && this.options.bind) {
             this.current = path;
             let hashChangedEvent = new Event('hashchange');
