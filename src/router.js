@@ -2,7 +2,9 @@ import { History } from './history.js';
 import { RouterNotStartedException } from './exceptions/not-started-exception.js';
 import { RouterNotFoundException } from './exceptions/not-found-exception.js';
 import { RouterInvalidException } from './exceptions/invalid-exception.js';
+import { RouterUnhandledException } from './exceptions/unhandled-exception.js';
 import { ParserUndefinedException } from './exceptions/parser-undefined-exception.js';
+import { OutOfHistoryException } from './exceptions/out-of-history-exception.js';
 import { riotParser } from './parsers/riot-parser.js';
 import { expressParser } from './parsers/express-parser.js';
 
@@ -175,7 +177,7 @@ export class Router {
             if (typeof this.parser !== 'function') {
                 return Promise.reject(new ParserUndefinedException());
             }
-            let responsePromise = Promise.reject();
+            let responsePromise = Promise.reject(new RouterUnhandledException());
             this.routes.some((filter) => {
                 let args = this.parser(
                     this.normalize(path),
@@ -185,14 +187,19 @@ export class Router {
                     let clbs = this.callbacks[filter] || [];
                     clbs.forEach((callback) => {
                         responsePromise = responsePromise
-                            .catch(() => callback.apply(this, args));
+                            .catch((ex) => {
+                                if (!ex || ex instanceof RouterUnhandledException) {
+                                    return callback.apply(this, args)
+                                }
+                                return Promise.reject(ex);
+                            });
                     });
                     return true;
                 }
                 return false;
             });
             return responsePromise
-                .catch(() => Promise.reject(new RouterNotFoundException()));
+                .catch((ex) => Promise.reject(ex || new RouterNotFoundException()));
         } else if (changeType === 1 && this.options.bind) {
             this.current = path;
             let hashChangedEvent = new Event('hashchange');
@@ -360,3 +367,10 @@ export class Router {
         return url.replace(ORIGIN_REGEX, '');
     }
 }
+
+Router.RouterNotStartedException = RouterNotStartedException;
+Router.RouterNotFoundException = RouterNotFoundException;
+Router.RouterInvalidException = RouterInvalidException;
+Router.RouterUnhandledException = RouterUnhandledException;
+Router.ParserUndefinedException = ParserUndefinedException;
+Router.OutOfHistoryException = OutOfHistoryException;
