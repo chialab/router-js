@@ -188,8 +188,8 @@ export class Router {
                     clbs.forEach((callback) => {
                         responsePromise = responsePromise
                             .catch((ex) => {
-                                if (!ex || ex instanceof RouterUnhandledException) {
-                                    return callback.apply(this, args)
+                                if (ex && ex instanceof RouterUnhandledException) {
+                                    return callback.apply(this, args);
                                 }
                                 return Promise.reject(ex);
                             });
