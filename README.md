@@ -9,7 +9,6 @@
 
 ## Install
 
-[![NPM](https://img.shields.io/npm/v/@chialab/rouer.svg)](https://www.npmjs.com/package/@chialab/rouer)
 ```
 $ npm i @chialab/rouer --save
 ```
@@ -33,6 +32,6 @@ appRouter.on('*', function() {
 appRouter.start();
 ```
 
-### Polyfill
-[HTML5-History-API](https://github.com/devote/HTML5-History-API)
+### Polyfills
+* [Promise](https://github.com/stefanpenner/es6-promise)
 
