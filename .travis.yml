@@ -2,6 +2,10 @@ language: node_js
 node_js:
   - "6"
 
+branches:
+  only:
+    - master
+
 env:
   matrix:
     - "CI_BUILD_TYPE=default"
@@ -17,11 +21,11 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 addons:
-  sauce_connect: true
+  sauce_connect:
+    no_ssl_bump_domains: all
 
 script:
-  - npm run test-ci
+  - npm test
 
 after_success:
-  - if [ "$CI_BUILD_TYPE" = 'default' ]; then npm run codecov; fi
-  - if [ "$CI_BUILD_TYPE" = 'default' ]; then npm run coveralls; fi
+  - if [ "$CI_BUILD_TYPE" = 'saucelabs' ]; then cat coverage/report-lcov/*/lcov.info | ./node_modules/.bin/codecov; fi
