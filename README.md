@@ -10,13 +10,15 @@
 ## Install
 
 ```
-$ npm i @chialab/rouer --save
+$ npm i @chialab/router --save
 ```
 
 ## Example
 
 ```js
-var appRouter = new Router();
+import Router from '@chialab/router';
+
+const appRouter = new Router();
 appRouter.on('/user/:username', function(id) {
     fetchUserById(id);
 });
@@ -34,4 +36,4 @@ appRouter.start();
 
 ### Polyfills
 * [Promise](https://github.com/stefanpenner/es6-promise)
-
+* [WeakMap](https://github.com/Polymer/WeakMap)
