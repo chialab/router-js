@@ -147,7 +147,7 @@ export class Router {
             return url.split(base)[1] || '';
         }
         url = LOCATION ? Router.getPathFromRoot(url) : (url || '');
-        return url.replace(base, '');
+        return this.normalize(url.replace(base, ''));
     }
     hasPathnameChanged(path) {
         if (typeof this.current !== 'string') {
