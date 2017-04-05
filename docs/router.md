@@ -15,7 +15,14 @@ Handle application's or component's states.
 
 | Name |Type | Description |
 |---|---|---|
-|`options` |*`Object`* |A set of options for the router.|
+|`options` |*`Object`* |A set of options for the router.**Properties: **
+|  | | |
+|`base` |*`String`* |The base pathname for the router (`'#'`).|
+|`dispatch` |*`Boolean`* |Should trigger initial state (`true`).|
+|`bind` |*`Boolean`* |Should bind to the global `window.history` object (`true`).|
+|`parser` |*`function`* |The url parser to use (`express`).|
+|`triggerHashChange` |*`Boolean`* |Should trigger a new state if only hash has changed (`true`).|
+|
 
 
 
@@ -40,9 +47,6 @@ Handle application's or component's states.
 
 
   
-### Members
-
-**[DEFAULTS](Router_DEFAULTS)**
 
 
 ### Methods

@@ -89,11 +89,7 @@ export class Router {
     }
     /**
      * A list of options for a Router instance.
-     * @namespace
-     * @property {String} base The base pathname for the router (`'#'`).
-     * @property {Boolean} dispatch Should trigger initial state (`true`).
-     * @property {Boolean} bind Should bind to the global `window.history` object (`true`).
-     * @property {Boolean} triggerHashChange Should trigger a new state if only hash has changed (`true`).
+     * @private
      */
     get DEFAULTS() {
         return {
@@ -109,6 +105,11 @@ export class Router {
      * @class Router
      *
      * @param {Object} options A set of options for the router.
+     * @param {String} options.base The base pathname for the router (`'#'`).
+     * @param {Boolean} options.dispatch Should trigger initial state (`true`).
+     * @param {Boolean} options.bind Should bind to the global `window.history` object (`true`).
+     * @param {Function} options.parser The url parser to use (`express`).
+     * @param {Boolean} options.triggerHashChange Should trigger a new state if only hash has changed (`true`).
      */
     constructor(options = {}) {
         this.history = new History();
