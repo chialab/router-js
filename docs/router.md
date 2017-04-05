@@ -1,197 +1,631 @@
-<a name="Router"></a>
-
 ## Router
-**Kind**: global class  
 
-* [Router](#Router)
-    * [`new Router(options)`](#new_Router_new)
-    * _instance_
-        * [`.DEFAULTS`](#Router+DEFAULTS) : <code>object</code>
-        * [`.reset()`](#Router+reset)
-        * [`.getPathFromBase(url)`](#Router+getPathFromBase) ⇒ <code>String</code>
-        * [`.trigger(force)`](#Router+trigger) ⇒ <code>Boolean</code>
-        * [`.on(filter, callback)`](#Router+on)
-        * [`.navigate(path, title, shouldReplace, force)`](#Router+navigate) ⇒ <code>Promise</code>
-        * [`.refresh(path, title, shouldReplace, force)`](#Router+refresh) ⇒ <code>Promise</code>
-        * [`.back()`](#Router+back) ⇒ <code>Promise</code>
-        * [`.forward()`](#Router+forward) ⇒ <code>Promise</code>
-        * [`.start()`](#Router+start)
-        * [`.stop()`](#Router+stop)
-        * [`.normalize(path)`](#Router+normalize) ⇒ <code>String</code>
-        * [`.resolve(path)`](#Router+resolve) ⇒ <code>String</code>
-        * [`.query(url)`](#Router+query) ⇒ <code>Object</code>
-    * _static_
-        * [`.getPathFromRoot(url)`](#Router.getPathFromRoot) ⇒ <code>String</code>
 
-<a name="new_Router_new"></a>
+#### new Router(options)
 
-### `new Router(options)`
+
+
 Handle application's or component's states.
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>Object</code> | A set of options for the router. |
 
-<a name="Router+DEFAULTS"></a>
 
-### `router.DEFAULTS` : <code>object</code>
-A list of options for a Router instance.
 
-**Kind**: instance namespace of <code>[Router](#Router)</code>  
-**Properties**
+**Parameters:**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| base | <code>String</code> | The base pathname for the router (`'#'`). |
-| dispatch | <code>Boolean</code> | Should trigger initial state (`true`). |
-| bind | <code>Boolean</code> | Should bind to the global `window.history` object (`true`). |
+| Name |Type | Description |
+|---|---|---|
+|`options` |*`Object`* |A set of options for the router.|
 
-<a name="Router+reset"></a>
 
-### `router.reset()`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+### Members
+
+**[DEFAULTS](Router_DEFAULTS)**
+
+
+### Methods
+
+
+
+#### reset()
+
+
+
 Reset all router rules.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-<a name="Router+getPathFromBase"></a>
 
-### `router.getPathFromBase(url)` ⇒ <code>String</code>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### getPathFromBase(url) *&rarr; {String}*
+
+
+
 Parse an URL and get a valid router path.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>String</code> - A valid router path.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| url | <code>String</code> | The URL to parse. |
 
-<a name="Router+trigger"></a>
 
-### `router.trigger(force)` ⇒ <code>Boolean</code>
+
+**Parameters:**
+
+| Name |Type | Description |
+|---|---|---|
+|`url` |*`String`* |The URL to parse.|
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`String`*
+A valid router path.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### trigger(force) *&rarr; {Boolean}*
+
+
+
 Parse the current path and trigger callbacks if a match with rules has been found.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Boolean</code> - A rule has been matched.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| force | <code>Boolean</code> | Should trigger also if path has not been changed. |
 
-<a name="Router+on"></a>
 
-### `router.on(filter, callback)`
+
+**Parameters:**
+
+| Name |Type | Description |
+|---|---|---|
+|`force` |*`Boolean`* |Should trigger also if path has not been changed.|
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`Boolean`*
+A rule has been matched.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### on(filter, callback)
+
+
+
 Bind a rule.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| filter | <code>String</code> | The route rules. |
-| callback | <code>function</code> | The callback for the rule. |
 
-<a name="Router+navigate"></a>
 
-### `router.navigate(path, title, shouldReplace, force)` ⇒ <code>Promise</code>
+
+**Parameters:**
+
+| Name |Type | Description |
+|---|---|---|
+|`filter` |*`String`* |The route rules.|
+|`callback` |*`function`* |The callback for the rule.|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### navigate(path, title, shouldReplace, force) *&rarr; {Promise}*
+
+
+
 Exec a router change.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Promise</code> - A promise which resolves if the navigation has matched a router's rule.  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| path | <code>String</code> |  | The new current path. |
-| title | <code>String</code> |  | The title for the new current path. |
-| shouldReplace | <code>Boolean</code> | <code>false</code> | Should replace the current state or add a new one. |
-| force | <code>Boolean</code> | <code>false</code> | Should force the state trigger. |
 
-<a name="Router+refresh"></a>
 
-### `router.refresh(path, title, shouldReplace, force)` ⇒ <code>Promise</code>
+
+**Parameters:**
+
+| Name |Type | Default | Description |
+|---|---|---|---|
+|`path` |*`String`* | |The new current path.|
+|`title` |*`String`* | |The title for the new current path.|
+|`shouldReplace` |*`Boolean`* |false |Should replace the current state or add a new one.|
+|`force` |*`Boolean`* |false |Should force the state trigger.|
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`Promise`*
+A promise which resolves if the navigation has matched a router's rule.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### refresh(path, title, shouldReplace, force) *&rarr; {Promise}*
+
+
+
 Helper method for state refresh.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Promise</code> - A promise which resolves if the navigation has matched a router's rule.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| path | <code>String</code> | The new current path. |
-| title | <code>String</code> | The title for the new current path. |
-| shouldReplace | <code>Boolean</code> | Should replace the current state or add a new one. |
-| force | <code>Boolean</code> | Should force the state trigger. |
 
-<a name="Router+back"></a>
 
-### `router.back()` ⇒ <code>Promise</code>
+
+**Parameters:**
+
+| Name |Type | Description |
+|---|---|---|
+|`path` |*`String`* |The new current path.|
+|`title` |*`String`* |The title for the new current path.|
+|`shouldReplace` |*`Boolean`* |Should replace the current state or add a new one.|
+|`force` |*`Boolean`* |Should force the state trigger.|
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`Promise`*
+A promise which resolves if the navigation has matched a router's rule.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### back() *&rarr; {Promise}*
+
+
+
 Move back in the history.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Promise</code> - A promise which resolves if the history has been navigated.  
-<a name="Router+forward"></a>
 
-### `router.forward()` ⇒ <code>Promise</code>
+
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`Promise`*
+A promise which resolves if the history has been navigated.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### forward() *&rarr; {Promise}*
+
+
+
 Move forward in the history.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Promise</code> - A promise which resolves if the history has been navigated.  
-<a name="Router+start"></a>
 
-### `router.start()`
+
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`Promise`*
+A promise which resolves if the history has been navigated.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### start()
+
+
+
 Init all history's listeners.
 If `options.dispatch === true` => trigger the initial state.
 If `options.bind === true` => bind to the global window.history object.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-<a name="Router+stop"></a>
 
-### `router.stop()`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### stop()
+
+
+
 Remove all history's listeners.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-<a name="Router+normalize"></a>
 
-### `router.normalize(path)` ⇒ <code>String</code>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### normalize(path) *&rarr; {String}*
+
+
+
 Normalize an URL path.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>String</code> - The normalized path.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| path | <code>String</code> | The path to normalize. |
 
-<a name="Router+resolve"></a>
 
-### `router.resolve(path)` ⇒ <code>String</code>
+
+**Parameters:**
+
+| Name |Type | Description |
+|---|---|---|
+|`path` |*`String`* |The path to normalize.|
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`String`*
+The normalized path.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### resolve(path) *&rarr; {String}*
+
+
+
 Create a complete URL for the `window.history.pushState` method.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>String</code> - The complete path.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| path | <code>String</code> | A valid router path. |
 
-<a name="Router+query"></a>
 
-### `router.query(url)` ⇒ <code>Object</code>
+
+**Parameters:**
+
+| Name |Type | Description |
+|---|---|---|
+|`path` |*`String`* |A valid router path.|
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`String`*
+The complete path.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### query(url) *&rarr; {Object}*
+
+
+
 Parse URL querystring.
 
-**Kind**: instance method of <code>[Router](#Router)</code>  
-**Returns**: <code>Object</code> - A key => value object with querystring params.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| url | <code>String</code> | The URL to parse. |
 
-<a name="Router.getPathFromRoot"></a>
 
-### `Router.getPathFromRoot(url)` ⇒ <code>String</code>
+
+**Parameters:**
+
+| Name |Type | Description |
+|---|---|---|
+|`url` |*`String`* |The URL to parse.|
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`Object`*
+A key => value object with querystring params.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### *(static)* getPathFromRoot(url) *&rarr; {String}*
+
+
+
 Extract the pathname from an URL.
 
-**Kind**: static method of <code>[Router](#Router)</code>  
-**Returns**: <code>String</code> - The pathname.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| url | <code>String</code> | The URL to parse. |
 
+
+
+**Parameters:**
+
+| Name |Type | Description |
+|---|---|---|
+|`url` |*`String`* |The URL to parse.|
+
+
+
+
+
+
+
+
+**Returns**:
+
+
+**Type**: *`String`*
+The pathname.
