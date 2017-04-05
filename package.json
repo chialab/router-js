@@ -1,6 +1,6 @@
 {
   "name": "@chialab/router",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple agnostic router for Web Apps.",
   "main": "index.js",
   "scripts": {
