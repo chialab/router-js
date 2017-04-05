@@ -181,7 +181,7 @@ export class Router {
             let responsePromise = Promise.reject(new RouterUnhandledException());
             this.routes.some((filter) => {
                 let args = this.parser(
-                    this.normalize(path),
+                    this.normalize(path).split('?')[0],
                     this.normalize(filter)
                 );
                 if (args !== null) {
