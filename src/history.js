@@ -1,5 +1,5 @@
 import { Emitter } from '@chialab/proteins/src/factory.js';
-import { OutOfHistoryException } from './exceptions/out-of-history-exception.js';
+import OutOfHistoryException from './exceptions/out-of-history-exception.js';
 
 /**
  * Generate a descriptor for a history state.
@@ -22,16 +22,17 @@ function createState(state, title, url, type) {
     };
 }
 
-export class History extends Emitter {
-    /**
-     * States collector.
-     * An abstraction of the window.history object.
-     * @class History
-     */
+/**
+ * States collector.
+ * An abstraction of the window.history object.
+ * @class History
+ */
+export default class History extends Emitter {
     constructor() {
         super();
         this.reset();
     }
+
     /**
      * Get the current state.
      * @type {Object}
@@ -40,6 +41,7 @@ export class History extends Emitter {
     get current() {
         return this.entries[this.index];
     }
+
     /**
      * Get history length.
      * @type {Integer}
@@ -48,6 +50,7 @@ export class History extends Emitter {
     get length() {
         return this.entries.length;
     }
+
     /**
      * Reset index and entries.
      */
@@ -55,6 +58,7 @@ export class History extends Emitter {
         this.index = -1;
         this.entries = [];
     }
+
     /**
      * Move in the history.
      *
@@ -72,6 +76,7 @@ export class History extends Emitter {
         }
         return Promise.resolve(this.current);
     }
+
     /**
      * Move back in the history by one entry. Same as `.go(-1)`
      *
@@ -80,6 +85,7 @@ export class History extends Emitter {
     back() {
         return this.go(-1);
     }
+
     /**
      * Move forward in the history by one entry. Same as `.go(1)`
      *
@@ -88,6 +94,7 @@ export class History extends Emitter {
     forward() {
         return this.go(1);
     }
+
     /**
      * Find the index of state in the history.
      *
@@ -104,6 +111,7 @@ export class History extends Emitter {
         }
         return -1;
     }
+
     /**
      * Add a state to the history.
      *
@@ -120,6 +128,7 @@ export class History extends Emitter {
         this.trigger('popstate', state);
         return state;
     }
+
     /**
      * Replace the current state of the history.
      *

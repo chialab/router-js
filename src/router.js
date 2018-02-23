@@ -1,17 +1,14 @@
 import merge from '@chialab/proteins/src/merge.js';
-import { History } from './history.js';
-import { RouterNotStartedException } from './exceptions/not-started-exception.js';
-import { RouterNotFoundException } from './exceptions/not-found-exception.js';
-import { RouterInvalidException } from './exceptions/invalid-exception.js';
-import { RouterUnhandledException } from './exceptions/unhandled-exception.js';
-import { ParserUndefinedException } from './exceptions/parser-undefined-exception.js';
-import { OutOfHistoryException } from './exceptions/out-of-history-exception.js';
+import History from './history.js';
+import RouterNotStartedException from './exceptions/not-started-exception.js';
+import RouterNotFoundException from './exceptions/not-found-exception.js';
+import RouterInvalidException from './exceptions/invalid-exception.js';
+import RouterUnhandledException from './exceptions/unhandled-exception.js';
+import ParserUndefinedException from './exceptions/parser-undefined-exception.js';
+import OutOfHistoryException from './exceptions/out-of-history-exception.js';
+import { HISTORY, LOCATION, DOCUMENT } from './browser.js';
 import EXPRESS_PARSER from './parsers/express-parser.js';
 
-const IS_BROWSER = typeof window !== 'undefined' &&
-    typeof window.addEventListener === 'function';
-const HISTORY = IS_BROWSER && window.history;
-const LOCATION = IS_BROWSER && (HISTORY && HISTORY.location || window && window.location);
 const ORIGIN_REGEX = /^((https?|s?ftps?):\/+)?(.+?)(?=\/|$)/i;
 
 /**
@@ -30,10 +27,15 @@ function debounce(ctx, fn, delay = 0) {
     };
 }
 
+/**
+ * Handle `popstate` event.
+ * @private
+ * @param {Event} ev 
+ */
 function onPopState(ev) {
     let history = this.history;
     if (ev instanceof Event) {
-        // window
+        // browser's event
         let state = HISTORY.state;
         let io = history.indexOfState(state);
         if (io !== -1) {
@@ -41,7 +43,7 @@ function onPopState(ev) {
             history.go(shift);
         } else {
             let path = this.getPathFromBase();
-            let newState = history.pushState(null, document.title, path);
+            let newState = history.pushState(null, DOCUMENT && DOCUMENT.title, path);
             HISTORY.replaceState(newState, document.title, this.resolve(path));
         }
     } else {
@@ -57,25 +59,18 @@ function onPopState(ev) {
     }
 }
 
-function bindWindow() {
-    let state = this.history.current;
-    let path = this.resolve(state.url);
-    HISTORY.replaceState(state.state, state.title, path);
-    this._onPopState = onPopState.bind(this);
-    this.history.on('popstate', this._onPopState);
-    window.addEventListener('popstate', this._onPopState);
-}
-
-function unbindWindow() {
-    if (this._onPopState) {
-        this.history.off('popstate', this._onPopState);
-        window.removeEventListener('popstate', this._onPopState);
-        delete this._onPopState;
-        delete this._onHashChange;
-    }
-}
-
 export default class Router {
+    /**
+     * Extract the pathname from an URL.
+     *
+     * @param {String} url The URL to parse.
+     * @return {String} The pathname.
+     */
+    static getPathFromRoot(url) {
+        url = url || LOCATION.href;
+        return url.replace(ORIGIN_REGEX, '');
+    }
+
     /**
      * A list of options for a Router instance.
      * @private
@@ -89,6 +84,7 @@ export default class Router {
             triggerHashChange: true,
         };
     }
+
     /**
      * Handle application's or component's states.
      * @class Router
@@ -108,6 +104,7 @@ export default class Router {
         this.parser = this.options.parser;
         this.base = this.options.base;
     }
+
     /**
      * Reset all router rules.
      */
@@ -115,6 +112,7 @@ export default class Router {
         this.callbacks = {};
         this.routes = [];
     }
+
     /**
      * Parse an URL and get a valid router path.
      *
@@ -130,6 +128,12 @@ export default class Router {
         url = LOCATION ? Router.getPathFromRoot(url) : (url || '');
         return this.normalize(url.replace(base, ''));
     }
+
+    /**
+     * Check if path name is different from the current one.
+     * @param {String} path Path to check.
+     * @param {Boolean}
+     */
     hasPathnameChanged(path) {
         if (typeof this.current !== 'string') {
             return true;
@@ -138,12 +142,22 @@ export default class Router {
         let newPath = path.split('#').shift();
         return (oldPath !== newPath);
     }
+
+    /**
+     * Detect the router change type.
+     * - 0 no changes
+     * - 1 hash changed
+     * - 2 path changed
+     * @param {String} path The new route.
+     * @return {Number}
+     */
     changeType(path) {
         if (path !== this.current) {
             return this.hasPathnameChanged(path) ? 2 : 1;
         }
         return 0;
     }
+
     /**
      * Parse the current path and trigger callbacks if a match with rules has been found.
      *
@@ -188,6 +202,7 @@ export default class Router {
         }
         return Promise.resolve();
     }
+
     /**
      * Bind a rule.
      *
@@ -201,6 +216,7 @@ export default class Router {
         this.callbacks[filter] = this.callbacks[filter] || [];
         this.callbacks[filter].push(callback);
     }
+
     /**
      * Exec a router change.
      *
@@ -222,6 +238,7 @@ export default class Router {
         }
         return Promise.reject(new RouterNotStartedException());
     }
+
     /**
      * Helper method for state refresh.
      *
@@ -241,6 +258,7 @@ export default class Router {
         }
         return Promise.reject(new RouterNotStartedException());
     }
+
     /**
      * Move back in the history.
      *
@@ -252,6 +270,7 @@ export default class Router {
         }
         return Promise.reject(new RouterNotStartedException());
     }
+
     /**
      * Move forward in the history.
      *
@@ -263,6 +282,7 @@ export default class Router {
         }
         return Promise.reject(new RouterNotStartedException());
     }
+
     /**
      * Init all history's listeners.
      * If `options.dispatch === true` => trigger the initial state.
@@ -273,17 +293,17 @@ export default class Router {
             let res = Promise.resolve();
             if (this.options.bind) {
                 this.current = this.getPathFromBase();
-                this.history.pushState(null, document.title, this.current);
+                this.history.pushState(null, DOCUMENT && DOCUMENT.title, this.current);
             }
             this.started = true;
-            if (IS_BROWSER) {
+            if (DOCUMENT) {
                 this.debouncedEmit = debounce(this, this.trigger, 1).bind(this);
                 this.history.on('popstate', this.debouncedEmit);
                 if (this.options.dispatch && this.history.length) {
                     res = this.trigger(true);
                 }
                 if (this.options.bind) {
-                    bindWindow.call(this);
+                    this.bindWindow();
                 }
                 this.options.dispatch = true;
             }
@@ -291,6 +311,7 @@ export default class Router {
         }
         return Promise.reject();
     }
+
     /**
      * Remove all history's listeners.
      */
@@ -299,10 +320,13 @@ export default class Router {
             this.history.reset();
             this.history.off('popstate', this.debouncedEmit);
             this.reset();
-            unbindWindow.call(this);
+            if (DOCUMENT) {
+                this.unbindWindow();
+            }
             this.started = false;
         }
     }
+
     /**
      * Normalize an URL path.
      *
@@ -312,6 +336,7 @@ export default class Router {
     normalize(path) {
         return path.replace(/^\/|\/$/, '');
     }
+
     /**
      * Create a complete URL for the `window.history.pushState` method.
      *
@@ -323,6 +348,7 @@ export default class Router {
         let addSlash = this.base.slice(-1) !== '/';
         return `${this.base}${addSlash ? '/' : ''}${path}`;
     }
+
     /**
      * Parse URL querystring.
      *
@@ -337,21 +363,35 @@ export default class Router {
         });
         return q;
     }
+
     /**
-     * Extract the pathname from an URL.
-     *
-     * @param {String} url The URL to parse.
-     * @return {String} The pathname.
+     * Bind to window instance.
      */
-    static getPathFromRoot(url) {
-        url = url || LOCATION.href;
-        return url.replace(ORIGIN_REGEX, '');
+    bindWindow() {
+        let state = this.history.current;
+        let path = this.resolve(state.url);
+        HISTORY.replaceState(state.state, state.title, path);
+        this._onPopState = onPopState.bind(this);
+        this.history.on('popstate', this._onPopState);
+        window.addEventListener('popstate', this._onPopState);
+    }
+
+    /**
+     * Unbind to window instance.
+     */
+    unbindWindow() {
+        if (this._onPopState) {
+            this.history.off('popstate', this._onPopState);
+            window.removeEventListener('popstate', this._onPopState);
+            delete this._onPopState;
+            delete this._onHashChange;
+        }
     }
 }
 
-Router.RouterNotStartedException = RouterNotStartedException;
-Router.RouterNotFoundException = RouterNotFoundException;
-Router.RouterInvalidException = RouterInvalidException;
-Router.RouterUnhandledException = RouterUnhandledException;
-Router.ParserUndefinedException = ParserUndefinedException;
-Router.OutOfHistoryException = OutOfHistoryException;
+export { RouterNotStartedException };
+export { RouterNotFoundException };
+export { RouterInvalidException };
+export { RouterUnhandledException };
+export { ParserUndefinedException };
+export { OutOfHistoryException };

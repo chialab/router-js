@@ -258,11 +258,11 @@ function pathToRegexp(path, keys, options) {
  * @param {String} path The path to parse.
  * @return {Array} A list of values for path variables.
  */
-export default function(path, filter) {
+export default (path, filter) => {
     let re = pathToRegexp(filter);
     let matches = re.exec(path);
     if (matches) {
         matches = matches.slice(1);
     }
     return matches;
-}
+};

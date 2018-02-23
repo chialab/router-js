@@ -1,9 +1,11 @@
 /* eslint-env mocha */
-
 import Router from '../../src/router.js';
 import { bindRoutes, Iterator } from './util.js';
+import chai from 'chai';
 
-describe('Unit: Router', () => {
+const assert = chai.assert;
+
+describe('Unit: Router Node', () => {
     const router = new Router({
         bind: false,
     });

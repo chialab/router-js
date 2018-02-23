@@ -1,10 +1,10 @@
-import { RouterException } from './router-exception.js';
+import RouterException from './router-exception.js';
 
 /**
  * Fires when the Route callback rejects to handle the current state.
  * @class RouterUnhandledException
  */
-export class RouterUnhandledException extends RouterException {
+export default class RouterUnhandledException extends RouterException {
     get defaultMessage() {
         return 'Route callback handling rejected.';
     }

@@ -8,35 +8,6 @@ export function debounce(callback) {
     });
 }
 
-function fireEvent() {
-    let ev;
-    if (typeof CustomEvent === 'function') {
-        ev = new CustomEvent('popstate', {});
-    } else {
-        ev = document.createEvent('Event');
-        ev.initEvent('popstate', true, true);
-    }
-    window.dispatchEvent(ev);
-}
-
-export function pushState(...args) {
-    window.history.pushState(...args);
-    fireEvent();
-    return Promise.resolve();
-}
-
-export function back() {
-    window.history.back();
-    fireEvent();
-    return Promise.resolve();
-}
-
-export function forward() {
-    window.history.forward();
-    fireEvent();
-    return Promise.resolve();
-}
-
 export function bindRoutes(router, routes) {
     router.stop();
     for (let k in routes) {

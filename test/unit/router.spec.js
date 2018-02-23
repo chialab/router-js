@@ -1,45 +1,12 @@
 /* eslint-env mocha */
-
 import Router from '../../src/router.js';
-import { back, forward, Iterator } from './util.js';
-import { pushState, bindRoutes } from './util.js';
+import { Iterator, bindRoutes } from './util.js';
+import chai from 'chai';
+
+const assert = chai.assert;
 
 describe('Unit: Router', () => {
     const router = new Router();
-
-    describe('navigation', () => {
-        before((done) => {
-            router.start();
-            let iterator = new Iterator();
-            iterator.add(() => router.navigate('/posts/11'));
-            iterator.add(() => router.navigate('/push/'));
-            iterator.add(() => router.navigate('/posts', '', true));
-            iterator.add(() => router.navigate('/action'));
-            iterator.add(() => router.navigate('/action/12'));
-            iterator.add(() => router.navigate('/action/20'));
-            iterator.add(() => router.back());
-            iterator.add(() => router.back());
-            iterator.add(() => router.back());
-            iterator.add(() => router.forward());
-            iterator.add(() => router.forward());
-            iterator.add(() => back());
-            iterator.add(() => back());
-            iterator.add(() => forward());
-            iterator.exec(done);
-        });
-
-        after(() => {
-            router.stop();
-        });
-
-        it('should track states', () => {
-            assert.equal(router.history.length, 6);
-        });
-
-        it('should track the current state', () => {
-            assert.equal(router.history.current.url, 'action');
-        });
-    });
 
     describe('query', () => {
         before((done) => {
@@ -70,9 +37,9 @@ describe('Unit: Router', () => {
         before((done) => {
             bindRoutes(router, routes);
             let iterator = new Iterator();
-            iterator.add(() => pushState(null, '', router.resolve('/posts/11')));
-            iterator.add(() => pushState(null, '', router.resolve('/posts')));
-            iterator.add(() => pushState(null, '', router.resolve('/action')));
+            iterator.add(() => router.navigate(router.resolve('/posts/11')));
+            iterator.add(() => router.navigate(router.resolve('/posts')));
+            iterator.add(() => router.navigate(router.resolve('/action')));
             iterator.exec(done);
         });
 
