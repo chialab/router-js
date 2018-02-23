@@ -36,4 +36,3 @@ appRouter.start();
 
 ### Polyfills
 * [Promise](https://github.com/stefanpenner/es6-promise)
-* [WeakMap](https://github.com/Polymer/WeakMap)
