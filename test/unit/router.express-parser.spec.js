@@ -1,7 +1,8 @@
-import { Router } from '../src/router.js';
+/* eslint-env mocha */
+
+import { Router } from '../../src/router.js';
 import { pushState, bindRoutes, Iterator } from './util.js';
 
-/* globals describe, before, after, beforeEach, afterEach, it, assert */
 describe('Unit: Router', () => {
     const router = new Router({
         parser: Router.EXPRESS_PARSER,

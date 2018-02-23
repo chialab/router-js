@@ -1,13 +1,14 @@
-import { Router } from '../src/router.js';
-import { pushState, bindRoutes, Iterator } from './util.js';
+/* eslint-env mocha */
 
-/* globals describe, before, after, beforeEach, afterEach, it, assert */
+import { Router } from '../../src/router.js';
+import { bindRoutes, Iterator } from './util.js';
+
 describe('Unit: Router', () => {
     const router = new Router({
-        base: '/',
+        bind: false,
     });
 
-    describe('no base configuration', () => {
+    describe('no bind configuration', () => {
         const routes = {
             '/posts/*': false,
             '/posts': false,
@@ -17,9 +18,9 @@ describe('Unit: Router', () => {
         before((done) => {
             bindRoutes(router, routes);
             let iterator = new Iterator();
-            iterator.add(() => pushState(null, '', router.resolve('/posts/11')));
-            iterator.add(() => pushState(null, '', router.resolve('/posts')));
-            iterator.add(() => pushState(null, '', router.resolve('/action')));
+            iterator.add(() => router.navigate('/posts/11'));
+            iterator.add(() => router.navigate('/posts'));
+            iterator.add(() => router.navigate('/action'));
             iterator.exec(done);
         });
 

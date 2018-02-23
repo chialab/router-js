@@ -1,5 +1,3 @@
-/* globals describe, before, beforeEach, afterEach, it, assert */
-
 export function debounce(callback) {
     return new Promise((resolve) => {
         setTimeout(() => {

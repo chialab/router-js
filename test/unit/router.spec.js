@@ -1,49 +1,10 @@
-import { Router } from '../src/router.js';
-import { pushState, back, forward, bindRoutes, Iterator } from './util.js';
+/* eslint-env mocha */
 
-/* globals describe, before, after, beforeEach, afterEach, it, assert */
+import { Router } from '../../src/router.js';
+import { back, forward, Iterator } from './util.js';
+
 describe('Unit: Router', () => {
-    const router = new Router({
-        parser: Router.RIOT_PARSER,
-    });
-
-    describe('default configuration', () => {
-        const routes = {
-            '/posts/*': false,
-            '/posts': false,
-            '/*': false,
-        };
-
-        before((done) => {
-            bindRoutes(router, routes);
-            let iterator = new Iterator();
-            iterator.add(() => pushState(null, '', router.resolve('/posts/11')));
-            iterator.add(() => pushState(null, '', router.resolve('/posts')));
-            iterator.add(() => pushState(null, '', router.resolve('/action')));
-            iterator.exec(done);
-        });
-
-        after(() => {
-            router.stop();
-        });
-
-        it('should trigger the function for the url "/posts/:id"', () => {
-            assert(Array.isArray(routes['/posts/*']));
-            assert.equal(routes['/posts/*'].length, 1);
-            assert.equal(routes['/posts/*'][0], '11');
-        });
-
-        it('should trigger the function for the url "/posts"', () => {
-            assert(Array.isArray(routes['/posts']));
-            assert.equal(routes['/posts'].length, 0);
-        });
-
-        it('should trigger the function for the url "/:controller"', () => {
-            assert(Array.isArray(routes['/*']));
-            assert.equal(routes['/*'].length, 1);
-            assert.equal(routes['/*'][0], 'action');
-        });
-    });
+    const router = new Router();
 
     describe('navigation', () => {
         before((done) => {
