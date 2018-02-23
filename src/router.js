@@ -82,7 +82,7 @@ export default class Router {
      */
     get DEFAULTS() {
         return {
-            base: '#',
+            base: '/',
             dispatch: true,
             bind: true,
             parser: EXPRESS_PARSER,
