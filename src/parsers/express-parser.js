@@ -33,7 +33,7 @@ const PATH_REGEXP = new RegExp([
  * @return {string}
  */
 function escapeString(str) {
-    return str.replace(/([.+*?=^!:${}()[\]|\/\\])/g, '\\$1');
+    return str.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1');
 }
 
 /**
@@ -43,7 +43,7 @@ function escapeString(str) {
  * @return {string}
  */
 function escapeGroup(group) {
-    return group.replace(/([=!:$\/()])/g, '\\$1');
+    return group.replace(/([=!:$/()])/g, '\\$1');
 }
 
 /**
@@ -258,7 +258,7 @@ function pathToRegexp(path, keys, options) {
  * @param {String} path The path to parse.
  * @return {Array} A list of values for path variables.
  */
-export function expressParser(path, filter) {
+export default function(path, filter) {
     let re = pathToRegexp(filter);
     let matches = re.exec(path);
     if (matches) {

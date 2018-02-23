@@ -1,4 +1,4 @@
-import { CallbackManager } from 'chialab-callback-manager/src/callback-manager.js';
+import { Emitter } from '@chialab/proteins/src/factory.js';
 import { OutOfHistoryException } from './exceptions/out-of-history-exception.js';
 
 /**
@@ -22,7 +22,7 @@ function createState(state, title, url, type) {
     };
 }
 
-export class History extends CallbackManager.mixin() {
+export class History extends Emitter {
     /**
      * States collector.
      * An abstraction of the window.history object.

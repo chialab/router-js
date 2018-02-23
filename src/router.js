@@ -1,3 +1,4 @@
+import merge from '@chialab/proteins/src/merge.js';
 import { History } from './history.js';
 import { RouterNotStartedException } from './exceptions/not-started-exception.js';
 import { RouterNotFoundException } from './exceptions/not-found-exception.js';
@@ -5,16 +6,13 @@ import { RouterInvalidException } from './exceptions/invalid-exception.js';
 import { RouterUnhandledException } from './exceptions/unhandled-exception.js';
 import { ParserUndefinedException } from './exceptions/parser-undefined-exception.js';
 import { OutOfHistoryException } from './exceptions/out-of-history-exception.js';
-import { riotParser } from './parsers/riot-parser.js';
-import { expressParser } from './parsers/express-parser.js';
+import EXPRESS_PARSER from './parsers/express-parser.js';
 
 const IS_BROWSER = typeof window !== 'undefined' &&
     typeof window.addEventListener === 'function';
 const HISTORY = IS_BROWSER && window.history;
 const LOCATION = IS_BROWSER && (HISTORY && HISTORY.location || window && window.location);
 const ORIGIN_REGEX = /^((https?|s?ftps?):\/+)?(.+?)(?=\/|$)/i;
-
-let routerCount = 0;
 
 /**
  * Make a command asynced.
@@ -77,16 +75,7 @@ function unbindWindow() {
     }
 }
 
-export class Router {
-    static get EXPRESS_PARSER() {
-        return expressParser;
-    }
-    static get RIOT_PARSER() {
-        return riotParser;
-    }
-    static get defaultParser() {
-        return this.EXPRESS_PARSER;
-    }
+export default class Router {
     /**
      * A list of options for a Router instance.
      * @private
@@ -96,7 +85,7 @@ export class Router {
             base: '#',
             dispatch: true,
             bind: true,
-            parser: Router.defaultParser,
+            parser: EXPRESS_PARSER,
             triggerHashChange: true,
         };
     }
@@ -115,18 +104,9 @@ export class Router {
         this.history = new History();
         this.started = false;
         this.reset();
-        this.options = {};
-        for (let key in this.DEFAULTS) {
-            if (options.hasOwnProperty(key)) {
-                this.options[key] = options[key];
-            } else if (this.DEFAULTS.hasOwnProperty(key)) {
-                this.options[key] = this.DEFAULTS[key];
-            }
-        }
+        this.options = merge(this.DEFAULTS, options);
         this.parser = this.options.parser;
         this.base = this.options.base;
-        this.id = routerCount;
-        routerCount++;
     }
     /**
      * Reset all router rules.

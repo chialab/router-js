@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-import { Router } from '../../src/router.js';
+import Router from '../../src/router.js';
 import { bindRoutes, Iterator } from './util.js';
 
 describe('Unit: Router', () => {
