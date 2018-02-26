@@ -35,4 +35,4 @@ appRouter.start();
 ```
 
 ### Polyfills
-* [Promise](https://github.com/stefanpenner/es6-promise)
+* [Promise](https://github.com/lahmatiy/es6-promise-polyfill)

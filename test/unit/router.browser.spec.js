@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+import 'es6-promise-polyfill';
 import Router from '../../src/router.js';
 import { Iterator } from './util.js';
 import chai from 'chai';

@@ -1,3 +1,5 @@
+import 'es6-promise-polyfill';
+
 export function debounce(callback) {
     return new Promise((resolve) => {
         setTimeout(() => {
