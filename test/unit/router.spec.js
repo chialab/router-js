@@ -8,7 +8,7 @@ const assert = chai.assert;
 describe('Unit: Router', () => {
     const router = new Router();
 
-    describe('query', () => {
+    describe('query', function() {
         this.timeout(10 * 1000);
 
         before((done) => {
@@ -29,7 +29,7 @@ describe('Unit: Router', () => {
         });
     });
 
-    describe('routes', () => {
+    describe('routes', function() {
         this.timeout(10 * 1000);
 
         const routes = {

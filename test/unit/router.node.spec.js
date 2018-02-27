@@ -10,7 +10,7 @@ describe('Unit: Router Node', () => {
         bind: false,
     });
 
-    describe('no bind configuration', () => {
+    describe('no bind configuration', function() {
         this.timeout(10 * 1000);
 
         const routes = {
