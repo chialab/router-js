@@ -1,4 +1,4 @@
-import 'es6-promise-polyfill';
+import 'promise-polyfill/dist/polyfill.js';
 
 export function debounce(callback) {
     return new Promise((resolve) => {

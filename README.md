@@ -33,6 +33,3 @@ appRouter.on('*', function() {
 });
 appRouter.start();
 ```
-
-### Polyfills
-* [Promise](https://github.com/lahmatiy/es6-promise-polyfill)
