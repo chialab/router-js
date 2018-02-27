@@ -32,7 +32,7 @@ if (typeof window !== 'undefined') {
 
     describe('Unit: Router Browser', function() {
         const router = new Router();
-        this.timeout(20 * 1000);
+        this.timeout(60 * 1000);
 
         describe('navigation', () => {
             before((done) => {
