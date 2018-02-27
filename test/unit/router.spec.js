@@ -9,6 +9,8 @@ describe('Unit: Router', () => {
     const router = new Router();
 
     describe('query', () => {
+        this.timeout(10 * 1000);
+
         before((done) => {
             router.start();
             let iterator = new Iterator();
@@ -28,6 +30,8 @@ describe('Unit: Router', () => {
     });
 
     describe('routes', () => {
+        this.timeout(10 * 1000);
+
         const routes = {
             '/posts/*': false,
             '/posts': false,

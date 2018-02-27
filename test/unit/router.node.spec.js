@@ -11,6 +11,8 @@ describe('Unit: Router Node', () => {
     });
 
     describe('no bind configuration', () => {
+        this.timeout(10 * 1000);
+
         const routes = {
             '/posts/*': false,
             '/posts': false,
