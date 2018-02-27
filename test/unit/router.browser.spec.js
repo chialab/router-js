@@ -30,8 +30,9 @@ if (typeof window !== 'undefined') {
         return Promise.resolve();
     };
 
-    describe('Unit: Router Browser', () => {
+    describe('Unit: Router Browser', function() {
         const router = new Router();
+        this.timeout(10 * 1000);
 
         describe('navigation', () => {
             before((done) => {

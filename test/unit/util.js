@@ -4,7 +4,7 @@ export function debounce(callback) {
             callback()
                 .then(() => resolve())
                 .catch(() => resolve());
-        }, 10);
+        }, 100);
     });
 }
 
