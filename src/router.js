@@ -373,6 +373,7 @@ export default class Router {
         HISTORY.replaceState(state.state, state.title, path);
         this._onPopState = onPopState.bind(this);
         this.history.on('popstate', this._onPopState);
+        this.history.on('replacestate', this._onPopState);
         window.addEventListener('popstate', this._onPopState);
     }
 

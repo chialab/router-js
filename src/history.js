@@ -140,6 +140,7 @@ export default class History extends Emitter {
     replaceState(stateObj, title, url) {
         let state = createState(stateObj, title, url, 'replace');
         this.entries[this.index] = state;
+        this.trigger('replacestate', state);
         return state;
     }
 }
