@@ -383,6 +383,7 @@ export default class Router {
     unbindWindow() {
         if (this._onPopState) {
             this.history.off('popstate', this._onPopState);
+            this.history.off('replacestate', this._onPopState);
             window.removeEventListener('popstate', this._onPopState);
             delete this._onPopState;
             delete this._onHashChange;
