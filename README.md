@@ -1,5 +1,5 @@
 # Router
-> A simple agnostic Router for Web Apps.
+A simple agnostic Router for Web Apps.
 
 [![Travis](https://img.shields.io/travis/Chialab/router-js.svg?maxAge=2592000)](https://travis-ci.org/Chialab/router-js)
 [![Code coverage](https://codecov.io/gh/Chialab/router-js/graph/badge.svg)](https://codecov.io/gh/Chialab/router-js)

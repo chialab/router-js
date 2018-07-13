@@ -9,15 +9,13 @@ import OutOfHistoryException from './exceptions/out-of-history-exception.js';
 import { HISTORY, LOCATION, DOCUMENT } from './browser.js';
 import EXPRESS_PARSER from './parsers/express-parser.js';
 
-const ORIGIN_REGEX = /^((https?|s?ftps?):\/+)?(.+?)(?=\/|$)/i;
-
 /**
  * Make a command asynced.
  * @private
  *
  * @param {Object} ctx The context for the method.
  * @param {Function} fn The method to call.
- * @param {Number} delay The delay before debouncing.
+ * @param {umber} delay The delay before debouncing.n
  */
 function debounce(ctx, fn, delay = 0) {
     let t;
@@ -30,7 +28,9 @@ function debounce(ctx, fn, delay = 0) {
 /**
  * Handle `popstate` event.
  * @private
- * @param {Event} ev 
+ *
+ * @param {Event} ev
+ * @return {void}
  */
 function onPopState(ev) {
     let history = this.history;
@@ -65,20 +65,25 @@ function onPopState(ev) {
  * @property {Array<Function>} callbacks A list of callbacks for the matched rule.
  */
 
+/**
+ * A simple agnostic Router for Web Apps.
+ * @class Router
+ */
 export default class Router {
     /**
      * Extract the pathname from an URL.
      *
-     * @param {String} url The URL to parse.
-     * @return {String} The pathname.
+     * @param {string} url The URL to parse.
+     * @return {string} The pathname.
      */
     static getPathFromRoot(url) {
         url = url || LOCATION.href;
-        return url.replace(ORIGIN_REGEX, '');
+        return url.replace(/^((https?|s?ftps?):\/+)?(.+?)(?=\/|$)/i, '');
     }
 
     /**
      * A list of options for a Router instance.
+     * @memberof Router
      * @private
      */
     get DEFAULTS() {
@@ -92,15 +97,15 @@ export default class Router {
     }
 
     /**
-     * Handle application's or component's states.
-     * @class Router
+     * Create a Router instance.
+     * @memberof Router
      *
      * @param {Object} options A set of options for the router.
-     * @param {String} options.base The base pathname for the router (`'#'`).
-     * @param {Boolean} options.dispatch Should trigger initial state (`true`).
-     * @param {Boolean} options.bind Should bind to the global `window.history` object (`true`).
+     * @param {string} options.base The base pathname for the router (`'#'`).
+     * @param {boolean} options.dispatch Should trigger initial state (`true`).
+     * @param {boolean} options.bind Should bind to the global `window.history` object (`true`).
      * @param {Function} options.parser The url parser to use (`express`).
-     * @param {Boolean} options.triggerHashChange Should trigger a new state if only hash has changed (`true`).
+     * @param {boolean} options.triggerHashChange Should trigger a new state if only hash has changed (`true`).
      */
     constructor(options = {}) {
         this.history = new History();
@@ -113,6 +118,7 @@ export default class Router {
 
     /**
      * Reset all router rules.
+     * @memberof Router
      */
     reset() {
         this.callbacks = {};
@@ -121,9 +127,10 @@ export default class Router {
 
     /**
      * Parse an URL and get a valid router path.
+     * @memberof Router
      *
-     * @param {String} url The URL to parse.
-     * @return {String} A valid router path.
+     * @param {string} url The URL to parse.
+     * @return {string} A valid router path.
      */
     getPathFromBase(url) {
         let base = this.base;
@@ -137,8 +144,10 @@ export default class Router {
 
     /**
      * Check if path name is different from the current one.
-     * @param {String} path Path to check.
-     * @param {Boolean}
+     * @memberof Router
+     *
+     * @param {string} path Path to check.
+     * @return {boolean}
      */
     hasPathnameChanged(path) {
         if (typeof this.current !== 'string') {
@@ -154,8 +163,10 @@ export default class Router {
      * - 0 no changes
      * - 1 hash changed
      * - 2 path changed
-     * @param {String} path The new route.
-     * @return {Number}
+     * @memberof Router
+     *
+     * @param {string} path The new route.
+     * @return {umber}n
      */
     changeType(path) {
         if (path !== this.current) {
@@ -166,6 +177,7 @@ export default class Router {
 
     /**
      * Parse the current path and return bound callbacks.
+     * @memberof Router
      *
      * @param {string} path The path to parse.
      * @return {ParseResult} A list of callbacks.
@@ -188,9 +200,10 @@ export default class Router {
 
     /**
      * Parse the current path and trigger callbacks if a match with rules has been found.
+     * @memberof Router
      *
-     * @param {Boolean} force Should trigger also if path has not been changed.
-     * @return {Boolean} A rule has been matched.
+     * @param {boolean} force Should trigger also if path has not been changed.
+     * @return {boolean} A rule has been matched.
      */
     trigger(force) {
         let path = this.history && this.history.current && this.history.current.url || '';
@@ -230,9 +243,11 @@ export default class Router {
 
     /**
      * Bind a rule.
+     * @memberof Router
      *
-     * @param {String} filter The route rules.
+     * @param {string} filter The route rules.
      * @param {Function} callback The callback for the rule.
+     * @return {void}
      */
     on(filter, callback) {
         filter = this.normalize(filter);
@@ -244,11 +259,12 @@ export default class Router {
 
     /**
      * Exec a router change.
+     * @memberof Router
      *
-     * @param {String} path The new current path.
-     * @param {String} title The title for the new current path.
-     * @param {Boolean} shouldReplace Should replace the current state or add a new one.
-     * @param {Boolean} force Should force the state trigger.
+     * @param {string} path The new current path.
+     * @param {string} title The title for the new current path.
+     * @param {boolean} shouldReplace Should replace the current state or add a new one.
+     * @param {boolean} force Should force the state trigger.
      * @return {Promise} A promise which resolves if the navigation has matched a router's rule.
      */
     navigate(path, title, shouldReplace = false, force = false) {
@@ -266,11 +282,12 @@ export default class Router {
 
     /**
      * Helper method for state refresh.
+     * @memberof Router
      *
-     * @param {String} path The new current path.
-     * @param {String} title The title for the new current path.
-     * @param {Boolean} shouldReplace Should replace the current state or add a new one.
-     * @param {Boolean} force Should force the state trigger.
+     * @param {string} path The new current path.
+     * @param {string} title The title for the new current path.
+     * @param {boolean} shouldReplace Should replace the current state or add a new one.
+     * @param {boolean} force Should force the state trigger.
      * @return {Promise} A promise which resolves if the navigation has matched a router's rule.
      */
     refresh() {
@@ -286,6 +303,7 @@ export default class Router {
 
     /**
      * Move back in the history.
+     * @memberof Router
      *
      * @return {Promise} A promise which resolves if the history has been navigated.
      */
@@ -298,6 +316,7 @@ export default class Router {
 
     /**
      * Move forward in the history.
+     * @memberof Router
      *
      * @return {Promise} A promise which resolves if the history has been navigated.
      */
@@ -312,6 +331,9 @@ export default class Router {
      * Init all history's listeners.
      * If `options.dispatch === true` => trigger the initial state.
      * If `options.bind === true` => bind to the global window.history object.
+     * @memberof Router
+     *
+     * @return {Promise}
      */
     start() {
         if (!this.started) {
@@ -339,6 +361,9 @@ export default class Router {
 
     /**
      * Remove all history's listeners.
+     * @memberof Router
+     *
+     * @return {void}
      */
     stop() {
         if (this.started) {
@@ -353,10 +378,11 @@ export default class Router {
     }
 
     /**
-     * Normalize an URL path.
+     * Normalize an URL path, removing leading and trailing slashes.
+     * @memberof Router
      *
-     * @param {String} path The path to normalize.
-     * @return {String} The normalized path.
+     * @param {string} path The path to normalize.
+     * @return {string} The normalized path.
      */
     normalize(path) {
         return path.replace(/^\/|\/$/, '');
@@ -364,9 +390,10 @@ export default class Router {
 
     /**
      * Create a complete URL for the `window.history.pushState` method.
+     * @memberof Router
      *
-     * @param {String} path A valid router path.
-     * @return {String} The complete path.
+     * @param {string} path A valid router path.
+     * @return {string} The complete path.
      */
     resolve(path) {
         path = path.replace(/^\/*/, '');
@@ -376,8 +403,9 @@ export default class Router {
 
     /**
      * Parse URL querystring.
+     * @memberof Router
      *
-     * @param {String} url The URL to parse.
+     * @param {string} url The URL to parse.
      * @return {Object} A key => value object with querystring params.
      */
     query(url) {
@@ -391,6 +419,9 @@ export default class Router {
 
     /**
      * Bind to window instance.
+     * @memberof Router
+     *
+     * @return {void}
      */
     bindWindow() {
         let state = this.history.current;
@@ -404,6 +435,9 @@ export default class Router {
 
     /**
      * Unbind to window instance.
+     * @memberof Router
+     *
+     * @return {void}
      */
     unbindWindow() {
         if (this._onPopState) {
