@@ -59,6 +59,12 @@ function onPopState(ev) {
     }
 }
 
+/**
+ * @typedef {Object} ParseResult
+ * @property {Array<string>} arguments A list of parsed arguments.
+ * @property {Array<Function>} callbacks A list of callbacks for the matched rule.
+ */
+
 export default class Router {
     /**
      * Extract the pathname from an URL.
@@ -159,6 +165,28 @@ export default class Router {
     }
 
     /**
+     * Parse the current path and return bound callbacks.
+     *
+     * @param {string} path The path to parse.
+     * @return {ParseResult} A list of callbacks.
+     */
+    parse(path) {
+        let routes = this.routes;
+        let normalizedPath = this.normalize(path).split('?')[0];
+        for (let ruleIter = 0, rulesLen = this.routes.length; ruleIter < rulesLen; ruleIter++) {
+            let filter = routes[ruleIter];
+            let args = this.parser(normalizedPath, this.normalize(filter));
+            if (args !== null) {
+                return {
+                    arguments: args,
+                    callbacks: this.callbacks[filter],
+                };
+            }
+        }
+        return null;
+    }
+
+    /**
      * Parse the current path and trigger callbacks if a match with rules has been found.
      *
      * @param {Boolean} force Should trigger also if path has not been changed.
@@ -172,27 +200,26 @@ export default class Router {
             if (typeof this.parser !== 'function') {
                 return Promise.reject(new ParserUndefinedException());
             }
-            let responsePromise = Promise.reject(new RouterUnhandledException());
-            let normalizedPath = this.normalize(path).split('?')[0];
-            this.routes.some((filter) => {
-                let args = this.parser(normalizedPath, this.normalize(filter));
-                if (args !== null) {
-                    let clbs = this.callbacks[filter] || [];
-                    clbs.forEach((callback) => {
-                        responsePromise = responsePromise
-                            .catch((ex) => {
-                                if (ex && ex instanceof RouterUnhandledException) {
-                                    return callback.apply(this, args);
-                                }
-                                return Promise.reject(ex);
-                            });
-                    });
-                    return true;
+            let responsePromise;
+            let parsed = this.parse(path);
+            if (!parsed) {
+                return Promise.reject(new RouterNotFoundException());
+            }
+            parsed.callbacks.forEach((callback) => {
+                if (responsePromise) {
+                    responsePromise = responsePromise
+                        .catch((ex) => {
+                            if (ex && ex instanceof RouterUnhandledException) {
+                                return callback.apply(this, parsed.arguments);
+                            }
+                            return Promise.reject(ex);
+                        });
+                } else {
+                    responsePromise = Promise.resolve()
+                        .then(() => callback.apply(this, parsed.arguments));
                 }
-                return false;
             });
-            return responsePromise
-                .catch((ex) => Promise.reject(ex || new RouterNotFoundException()));
+            return responsePromise || Promise.resolve();
         } else if (changeType === 1 && this.options.bind) {
             this.current = path;
             let hashChangedEvent = new Event('hashchange');
