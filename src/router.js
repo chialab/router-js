@@ -173,11 +173,9 @@ export default class Router {
                 return Promise.reject(new ParserUndefinedException());
             }
             let responsePromise = Promise.reject(new RouterUnhandledException());
+            let normalizedPath = this.normalize(path).split('?')[0];
             this.routes.some((filter) => {
-                let args = this.parser(
-                    this.normalize(path).split('?')[0],
-                    this.normalize(filter)
-                );
+                let args = this.parser(normalizedPath, this.normalize(filter));
                 if (args !== null) {
                     let clbs = this.callbacks[filter] || [];
                     clbs.forEach((callback) => {
