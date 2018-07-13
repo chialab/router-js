@@ -250,11 +250,35 @@ export default class Router {
      * @return {void}
      */
     on(filter, callback) {
-        filter = this.normalize(filter);
-        filter = `/${filter}`;
+        filter = `/${this.normalize(filter)}`;
         this.routes.push(filter);
         this.callbacks[filter] = this.callbacks[filter] || [];
         this.callbacks[filter].push(callback);
+    }
+
+    /**
+     * Unbind a rule.
+     * @memberof Router
+     *
+     * @param {string} filter The route rules.
+     * @param {Function} [callback] The callback for the rule.
+     * @return {void}
+     */
+    off(filter, callback) {
+        filter = `/${this.normalize(filter)}`;
+        if (callback) {
+            let callbacks = this.callbacks[filter] || [];
+            let callbackIO = callbacks.indexOf(callback);
+            if (callbackIO !== -1) {
+                this.callbacks.splice(callbackIO, 1);
+            }
+        } else {
+            delete this.callbacks[filter];
+            let routeIO = this.routes.indexOf(filter);
+            if (routeIO !== -1) {
+                this.routes.splice(routeIO, 1);
+            }
+        }
     }
 
     /**

@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-import Router from '../../src/router.js';
+import Router, { RouterNotFoundException } from '../../src/router.js';
 import { Iterator, bindRoutes } from './util.js';
 import chai from 'chai';
 
@@ -66,6 +66,39 @@ describe('Unit: Router', () => {
             assert(Array.isArray(routes['/*']));
             assert.equal(routes['/*'].length, 1);
             assert.equal(routes['/*'][0], 'action');
+        });
+    });
+
+    describe('unbind', function() {
+        this.timeout(10 * 1000);
+
+        const routes = {
+            '/posts/*': false,
+        };
+
+        before(() => {
+            bindRoutes(router, routes);
+        });
+
+        after(() => {
+            router.stop();
+        });
+
+        it('should trigger the function for the url "/posts/:id"', () =>
+            router.navigate(router.resolve('/posts/11'))
+                .then(() => {
+                    assert(Array.isArray(routes['/posts/*']));
+                    assert.equal(routes['/posts/*'].length, 1);
+                    assert.equal(routes['/posts/*'][0], '11');
+                })
+        );
+
+        it('should NOT trigger the function for the url "/posts/:id" after off', () => {
+            router.off('/posts/*');
+            return router.navigate(router.resolve('/posts/15'))
+                .catch((ex) => {
+                    assert(ex instanceof RouterNotFoundException);
+                });
         });
     });
 });
