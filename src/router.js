@@ -90,7 +90,7 @@ export default class Router {
         return {
             base: '/',
             dispatch: true,
-            bind: true,
+            bind: !!DOCUMENT,
             parser: EXPRESS_PARSER,
             triggerHashChange: true,
         };
