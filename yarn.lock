@@ -2,9 +2,10 @@
 # yarn lockfile v1
 
 
-"@chialab/proteins@^3.0.0-rc.5":
-  version "3.0.0-rc.15"
-  resolved "https://registry.npmjs.org/@chialab/proteins/-/proteins-3.0.0-rc.15.tgz#57eb91673979b38b9ea7f83654429e2c69af3f14"
+"@chialab/proteins@^3.0.0":
+  version "3.0.2"
+  resolved "https://registry.npmjs.org/@chialab/proteins/-/proteins-3.0.2.tgz#493208e02690d067104584c45a60991e06e854d7"
+  integrity sha512-gBVyGGQblcyFULaJNNNy5Ev98d9v6BsfKWMJj8zQTU4lxeU7BJ5m4CWEnsgG64Ra6QwiyjwrfBV4YgQh34lLLw==
 
 assertion-error@^1.0.1:
   version "1.1.0"
