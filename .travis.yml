@@ -33,3 +33,8 @@ jobs:
         - rna unit --saucelabs --context test/unit/context.html
   allow_failures:
     - env: "CI_BUILD_TYPE=saucelabs"
+
+addons:
+  apt:
+    packages:
+      - xvfb
