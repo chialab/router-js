@@ -1,11 +1,30 @@
-# Router
-A simple agnostic Router for Web Apps.
+<p align="center">
+   <strong>Router</strong>
+</p>
 
-[![Travis](https://img.shields.io/travis/Chialab/router-js.svg?maxAge=2592000)](https://travis-ci.org/Chialab/router-js)
-[![Code coverage](https://codecov.io/gh/Chialab/router-js/graph/badge.svg)](https://codecov.io/gh/Chialab/router-js)
-[![NPM](https://img.shields.io/npm/v/@chialab/router.svg)](https://npmjs.org/packages/@chialab/router)
+<p align="center">
+    A simple agnostic Router for Web Apps.
+</p>
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/chialab-sl-008.svg)](https://saucelabs.com/u/chialab-sl-008)
+<p align="center">
+    <a href="https://travis-ci.org/chialab/router-js">
+        <img alt="Travis status" src="https://img.shields.io/travis/chialab/router-js.svg?style=flat-square">
+    </a>
+    <a href="https://codecov.io/gh/chialab/router-js">
+        <img alt="Code coverage" src="https://img.shields.io/codecov/c/github/chialab/router-js.svg?style=flat-square">
+    </a>
+    <a href="https://www.npmjs.com/package/@chialab/router">
+        <img alt="NPM" src="https://img.shields.io/npm/v/@chialab/router.svg?style=flat-square">
+    </a>
+    <a href="https://github.com/chialab/router-js/blob/master/LICENSE">
+        <img alt="License" src="https://img.shields.io/npm/l/@dnajs/core.svg?style=flat-square">
+    </a>
+    <a href="https://saucelabs.com/u/chialab-sl-008">
+        <img alt="Saucelabs" src="https://badges.herokuapp.com/sauce/chialab-sl-008?labels=none&style=flat-square">
+    </a>
+</p>
+
+---
 
 ## Install
 
