@@ -4,14 +4,6 @@ jobs:
   include:
     - stage: test
       env: CI_BUILD_TYPE=default
-      node_js: 8
-      install:
-        - yarn global add @chialab/rna-cli
-        - rna install
-      script:
-        - rna unit --node
-    - stage: test
-      env: CI_BUILD_TYPE=default
       node_js: 10
       install:
         - yarn global add @chialab/rna-cli
