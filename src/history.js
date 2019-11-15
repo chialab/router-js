@@ -1,4 +1,4 @@
-import { Emitter } from '@chialab/proteins/src/factory.js';
+import { Factory } from '@chialab/proteins';
 import OutOfHistoryException from './exceptions/out-of-history-exception.js';
 
 /**
@@ -27,7 +27,7 @@ function createState(state, title, url, type) {
  * An abstraction of the window.history object.
  * @class History
  */
-export default class History extends Emitter {
+export default class History extends Factory.Emitter {
     constructor() {
         super();
         this.reset();

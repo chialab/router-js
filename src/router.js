@@ -1,4 +1,4 @@
-import merge from '@chialab/proteins/src/merge.js';
+import { merge } from '@chialab/proteins';
 import History from './history.js';
 import RouterNotStartedException from './exceptions/not-started-exception.js';
 import RouterNotFoundException from './exceptions/not-found-exception.js';
