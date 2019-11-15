@@ -7,7 +7,7 @@ jobs:
       node_js: 10
       install:
         - yarn global add @chialab/rna-cli
-        - rna install
+        - yarn install
       script:
         - rna unit --node
     - stage: test
@@ -16,10 +16,12 @@ jobs:
       node_js: 10
       install:
         - export CHROME_BIN=chromium-browser
+        - yarn global add @chialab/rna-cli
+        - yarn install
+      before_script:
         - export DISPLAY=:99.0
         - sh -e /etc/init.d/xvfb start
-        - yarn global add @chialab/rna-cli
-        - rna install
+        - sleep 3
       script:
         - rna unit --browser --context test/unit/context.html
     - stage: test
@@ -28,13 +30,11 @@ jobs:
       node_js: 10
       install:
         - yarn global add @chialab/rna-cli
-        - rna install
+        - yarn install
       script:
         - rna unit --saucelabs --context test/unit/context.html
   allow_failures:
     - env: "CI_BUILD_TYPE=saucelabs"
 
-addons:
-  apt:
-    packages:
-      - xvfb
+services:
+  - xvfb
