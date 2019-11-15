@@ -2,22 +2,29 @@
   "name": "@chialab/router",
   "version": "3.0.0",
   "description": "A simple agnostic router for Web Apps.",
-  "main": "dist/router.js",
-  "module": "src/router.js",
+  "directories": {
+    "src": "src",
+    "test": "test",
+    "dist": "dist"
+  },
+  "lib": "src/router.js",
+  "module": "dist/esm/router.js",
+  "main": "dist/cjs/router.js",
+  "browser": "dist/umd/router.js",
   "scripts": {
-    "build": "rna build --production",
+    "build": "rm -rf dist && rna build --production",
     "test": "rna unit",
     "lint": "rna lint"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Chialab/router-js.git"
+    "url": "git@github.com:Chialab/router-js.git"
   },
   "keywords": [
     "Chialab",
     "route"
   ],
-  "author": "Chialab <dev@chialab.io> (http://www.chialab.it)",
+  "author": "Chialab <dev@chialab.io> (https://www.chialab.it)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Chialab/router-js/issues"
@@ -27,6 +34,10 @@
     "@chialab/proteins": "^3.0.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2"
+    "babel-eslint": "^10.0.3",
+    "chai": "^4.1.2",
+    "eslint": "^6.6.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-mocha": "^6.2.1"
   }
 }

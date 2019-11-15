@@ -1,6 +1,19 @@
+# RNA
+# NPM
 /node_modules
-/bower_components
-/coverage
-/dist
-.eslintcache
 npm-debug.log
+yarn-error.log
+
+# LINT
+.eslintcache
+.stylelintcache
+
+# TEST
+/test/__coverage__
+/test/__generated__
+
+# BUILD
+/dist
+/public
+
+# RNA
