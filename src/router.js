@@ -133,13 +133,22 @@ export default class Router {
      * @return {string} A valid router path.
      */
     getPathFromBase(url) {
-        let base = this.base;
-        if (base && base[0] === '#') {
-            url = url || LOCATION.href || '';
-            return url.split(base)[1] || '';
+        let base = this.normalize(this.base || '/');
+        url = this.normalize(url || (LOCATION ? Router.getPathFromRoot(url) : ''));
+        if (base === '') {
+            return url;
         }
-        url = LOCATION ? Router.getPathFromRoot(url) : (url || '');
-        return this.normalize(url.replace(base, ''));
+        if (url.indexOf(base) === 0) {
+            return url.replace(base, '');
+        }
+        if (base.indexOf('#') !== -1) {
+            base = this.normalize(base.split('#')[0]);
+            if (url === base) {
+                return '';
+            }
+        }
+
+        return url;
     }
 
     /**
